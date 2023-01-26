@@ -20,8 +20,7 @@ bool first_cords = true; // used to set the prevlng and prevlat to the right sta
 String convert = ""; // used to convert ints to srtings to be sent to the display
 
 
-void setup() {  // starts the serial ports
-  Serial.begin(9600);  
+void setup() {  // starts the serial ports 
   Serial2.begin(9600); // GPS port
   Display.begin(9600); // Display software serial
 }
@@ -30,7 +29,6 @@ void loop() {
   // put your main code here, to run repeatedly:
     if(Serial2.available()>0){ // if the GPS data is availibe
       GPS.encode(Serial2.read()); // sends the NHEMA setance to be parse 
-      Serial1.flush(); // clears the serial port queue to reduce overflow
       if(GPS.location.isValid()){ // checks if the gps data is valid
         if(GPS.location.isUpdated()){ // if the data has been updated
           if(first_cords){ // first time protocal
@@ -46,23 +44,21 @@ void loop() {
           heading = GPS.course.deg(); 
           if(GPS.distanceBetween(prevlat,prevlng,lat,lng)>3){ // if the distance is above around 9ft
              distance += (GPS.distanceBetween(prevlat,prevlng,lat,lng)/1610.0); // converts the meters to miles 
-            prevlng = lng;
-            prevlat = lat;            
-                                          }
+              prevlng = lng; // updates the prev values
+              prevlat = lat;           
+          }
           // writes the 
           speed = (int)(speed*10); // the display interprets doubles werid they need to be multipled by 10 
           convert = (String) (int)speed; // converts it to a sting for the concatonation
-          Serial.println(convert);
           Display.print("Speed.val=" + convert); // sends speed value 
           Display.write(0xff);
           Display.write(0xff);
           Display.write(0xff);
 
-          dis_convert = (int) (distance * 10);
+          dis_convert = (int) (distance * 10); // converts the value to an int
           convert = (String) dis_convert;
-          Serial.println(convert);
           Display.print("Distance.val=" + convert); // sends the distance value
-          Display.write(0xff);
+          Display.write(0xff); // tells the display to update info
           Display.write(0xff);
           Display.write(0xff);
         }
