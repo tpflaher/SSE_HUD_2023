@@ -21,6 +21,7 @@ String convert = ""; // used to convert ints to srtings to be sent to the displa
 
 
 void setup() {  // starts the serial ports
+  Serial.begin(9600);  
   Serial2.begin(9600); // GPS port
   Display.begin(9600); // Display software serial
 }
@@ -49,21 +50,22 @@ void loop() {
           // writes the 
           speed = (int)speed*10; // the display interprets doubles werid they need to be multipled by 10 
           convert = (String) speed; // converts it to a sting for the concatonation
-          Display.print("Speed.val =" + convert); // sends speed value 
+          Serial.println(convert);
+          Display.print("Speed.val=" + convert); // sends speed value 
           Display.write(0xff);
           Display.write(0xff);
           Display.write(0xff);
 
           dis_convert = (int) distance * 10;
           convert = (String) dis_convert;
-          Display.print("Distance.val =" + convert); // sends the distance value
+          Serial.println(convert);
+          Display.print("Distance.val=" + convert); // sends the distance value
           Display.write(0xff);
           Display.write(0xff);
           Display.write(0xff);
         }
     }
       
-
-
-    
+  }
+  Serial.println(Serial2.available());    
 }
