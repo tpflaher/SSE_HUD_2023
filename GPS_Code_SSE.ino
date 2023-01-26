@@ -45,18 +45,20 @@ void loop() {
           sats = GPS.satellites.value();
           heading = GPS.course.deg(); 
           if(GPS.distanceBetween(prevlat,prevlng,lat,lng)>3){ // if the distance is above around 9ft
-             distance += (GPS.distanceBetween(prevlat,prevlng,lat,lng)/1610.0); // converts the meters to miles            
-          }
+             distance += (GPS.distanceBetween(prevlat,prevlng,lat,lng)/1610.0); // converts the meters to miles 
+            prevlng = lng;
+            prevlat = lat;            
+                                          }
           // writes the 
-          speed = (int)speed*10; // the display interprets doubles werid they need to be multipled by 10 
-          convert = (String) speed; // converts it to a sting for the concatonation
+          speed = (int)(speed*10); // the display interprets doubles werid they need to be multipled by 10 
+          convert = (String) (int)speed; // converts it to a sting for the concatonation
           Serial.println(convert);
           Display.print("Speed.val=" + convert); // sends speed value 
           Display.write(0xff);
           Display.write(0xff);
           Display.write(0xff);
 
-          dis_convert = (int) distance * 10;
+          dis_convert = (int) (distance * 10);
           convert = (String) dis_convert;
           Serial.println(convert);
           Display.print("Distance.val=" + convert); // sends the distance value
@@ -66,6 +68,5 @@ void loop() {
         }
     }
       
-  }
-  Serial.println(Serial2.available());    
+  }   
 }
