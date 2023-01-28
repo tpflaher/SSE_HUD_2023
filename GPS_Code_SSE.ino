@@ -4,7 +4,8 @@
 
 TinyGPSPlus GPS; // creates the gps object
 SoftwareSerial Display (12,13); // sets up the software Serial to digital pins 12 and 13
-// variables used to store and convert data
+
+// global variables used to store and convert data
 double lat;
 double lng;
 double prevlat;
@@ -14,11 +15,8 @@ double speed;
 double alt;
 double heading;
 double distance;
-int dis_convert;
 
 bool first_cords = true; // used to set the prevlng and prevlat to the right starting value
-String convert = ""; // used to convert ints to srtings to be sent to the display
-
 
 void setup() {  // starts the serial ports 
   Serial2.begin(9600); // GPS port
@@ -42,27 +40,44 @@ void loop() {
           speed = GPS.speed.mph();
           sats = GPS.satellites.value();
           heading = GPS.course.deg(); 
-          if(GPS.distanceBetween(prevlat,prevlng,lat,lng)>3){ // if the distance is above around 9ft
+          
+          if(GPS.distanceBetween(prevlat,prevlng,lat,lng)>3) { // if the distance is above around 9ft
              distance += (GPS.distanceBetween(prevlat,prevlng,lat,lng)/1610.0); // converts the meters to miles 
               prevlng = lng; // updates the prev values
               prevlat = lat;           
           }
-          // writes the 
-          speed = (int)(speed*10); // the display interprets doubles werid they need to be multipled by 10 
-          convert = (String) (int)speed; // converts it to a sting for the concatonation
-          Display.print("Speed.val=" + convert); // sends speed value 
-          Display.write(0xff);
-          Display.write(0xff);
-          Display.write(0xff);
 
-          dis_convert = (int) (distance * 10); // converts the value to an int
-          convert = (String) dis_convert;
-          Display.print("Distance.val=" + convert); // sends the distance value
-          Display.write(0xff); // tells the display to update info
-          Display.write(0xff);
-          Display.write(0xff);
+          setDisplayVar("Speed", displayFormatted(speed));
+          //speed = (int)(speed*10); // the display interprets doubles werid they need to be multipled by 10 
+          //convert = (String) (int)speed; // converts it to a sting for the concatonation
+          //Display.print("Speed.val=" + convert); // sends speed value 
+
+          
+          setDisplayVar("Distance", displayFormatted(distance));
+          //dis_convert = (int) (distance * 10); // converts the value to an int
+          //convert = (String) dis_convert;
+          //Display.print("Distance.val=" + convert); // sends the distance value
+          
         }
     }
+
+    
       
   }   
+}
+
+String displayFormatted(double input) {
+  // the display interprets doubles werid they need to be multipled by 10
+  return (String) (int) (input * 10);
+}
+
+void setDisplayVar(String variable, String newValue) {
+  Display.print(variable + ".val=" + newValue);
+  updateInfo();
+}
+
+void updateInfo() {
+  Display.write(0xff); // tells the display to update info
+  Display.write(0xff);
+  Display.write(0xff);
 }
