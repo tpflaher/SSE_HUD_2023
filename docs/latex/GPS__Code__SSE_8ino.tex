@@ -1,0 +1,153 @@
+\hypertarget{GPS__Code__SSE_8ino}{}\doxysection{GPS\+\_\+\+Code\+\_\+\+SSE.\+ino File Reference}
+\label{GPS__Code__SSE_8ino}\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+{\ttfamily \#include $<$Tiny\+GPS++.\+h$>$}\newline
+{\ttfamily \#include $<$Software\+Serial.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Software\+Serial \mbox{\hyperlink{GPS__Code__SSE_8ino_a32f7946ffc898b20669450af82f177d7}{Display}} (12, 13)
+\item 
+void \mbox{\hyperlink{GPS__Code__SSE_8ino_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\item 
+void \mbox{\hyperlink{GPS__Code__SSE_8ino_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\item 
+String \mbox{\hyperlink{GPS__Code__SSE_8ino_a2adbbdfa497c424c55b7d48622331311}{display\+Formatted}} (double input)
+\item 
+void \mbox{\hyperlink{GPS__Code__SSE_8ino_a8a69e3d2c7c05b9779498d1ea8263b5a}{set\+Display\+Var}} (String variable, String new\+Value)
+\item 
+void \mbox{\hyperlink{GPS__Code__SSE_8ino_af050eab7948f2ccf07027987c17e8b06}{update\+Info}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Tiny\+GPSPlus \mbox{\hyperlink{GPS__Code__SSE_8ino_ae66132fd7406f288add449f1655e3e45}{GPS}}
+\item 
+double \mbox{\hyperlink{GPS__Code__SSE_8ino_a7972334534f68166121a6e51b0aac2d6}{lat}}
+\item 
+double \mbox{\hyperlink{GPS__Code__SSE_8ino_a786811151a534227205c5a102f772c9e}{lng}}
+\item 
+double \mbox{\hyperlink{GPS__Code__SSE_8ino_a71d3a4fea86b556f34ca489bed45ed54}{prevlat}}
+\item 
+double \mbox{\hyperlink{GPS__Code__SSE_8ino_adf18cb33aa05b5fc8011c15aa4c6a842}{prevlng}}
+\item 
+int \mbox{\hyperlink{GPS__Code__SSE_8ino_a507704019ecebddb742907d5ef247e91}{sats}}
+\item 
+double \mbox{\hyperlink{GPS__Code__SSE_8ino_a6dc6e6f3c75c509ce943163afb5dade7}{speed}}
+\item 
+double \mbox{\hyperlink{GPS__Code__SSE_8ino_ad28150484129ecb23959cec99543698c}{alt}}
+\item 
+double \mbox{\hyperlink{GPS__Code__SSE_8ino_ae024163074f229a06b7ea69b190e466d}{heading}}
+\item 
+double \mbox{\hyperlink{GPS__Code__SSE_8ino_a79b8e036dca6911e3295a47d99f21f43}{distance}}
+\item 
+bool \mbox{\hyperlink{GPS__Code__SSE_8ino_aa46771e7b747a0d58d5fd6c5f57c6e3f}{first\+\_\+cords}} = true
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_a32f7946ffc898b20669450af82f177d7}\label{GPS__Code__SSE_8ino_a32f7946ffc898b20669450af82f177d7}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!Display@{Display}}
+\index{Display@{Display}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{Display()}{Display()}}
+{\footnotesize\ttfamily Software\+Serial Display (\begin{DoxyParamCaption}\item[{12}]{,  }\item[{13}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_a2adbbdfa497c424c55b7d48622331311}\label{GPS__Code__SSE_8ino_a2adbbdfa497c424c55b7d48622331311}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!displayFormatted@{displayFormatted}}
+\index{displayFormatted@{displayFormatted}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{displayFormatted()}{displayFormatted()}}
+{\footnotesize\ttfamily String display\+Formatted (\begin{DoxyParamCaption}\item[{double}]{input }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_afe461d27b9c48d5921c00d521181f12f}\label{GPS__Code__SSE_8ino_afe461d27b9c48d5921c00d521181f12f}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!loop@{loop}}
+\index{loop@{loop}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default arduino function that runs repeatedly while the arduino is on. \mbox{\Hypertarget{GPS__Code__SSE_8ino_a8a69e3d2c7c05b9779498d1ea8263b5a}\label{GPS__Code__SSE_8ino_a8a69e3d2c7c05b9779498d1ea8263b5a}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!setDisplayVar@{setDisplayVar}}
+\index{setDisplayVar@{setDisplayVar}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{setDisplayVar()}{setDisplayVar()}}
+{\footnotesize\ttfamily void set\+Display\+Var (\begin{DoxyParamCaption}\item[{String}]{variable,  }\item[{String}]{new\+Value }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_a4fc01d736fe50cf5b977f755b675f11d}\label{GPS__Code__SSE_8ino_a4fc01d736fe50cf5b977f755b675f11d}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!setup@{setup}}
+\index{setup@{setup}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default arduino function that runs once when the arduino is first powered/reset. We use this function to start serial connections to the GPS and the Display \mbox{\Hypertarget{GPS__Code__SSE_8ino_af050eab7948f2ccf07027987c17e8b06}\label{GPS__Code__SSE_8ino_af050eab7948f2ccf07027987c17e8b06}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!updateInfo@{updateInfo}}
+\index{updateInfo@{updateInfo}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{updateInfo()}{updateInfo()}}
+{\footnotesize\ttfamily void update\+Info (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_ad28150484129ecb23959cec99543698c}\label{GPS__Code__SSE_8ino_ad28150484129ecb23959cec99543698c}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!alt@{alt}}
+\index{alt@{alt}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{alt}{alt}}
+{\footnotesize\ttfamily double alt}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_a79b8e036dca6911e3295a47d99f21f43}\label{GPS__Code__SSE_8ino_a79b8e036dca6911e3295a47d99f21f43}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!distance@{distance}}
+\index{distance@{distance}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{distance}{distance}}
+{\footnotesize\ttfamily double distance}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_aa46771e7b747a0d58d5fd6c5f57c6e3f}\label{GPS__Code__SSE_8ino_aa46771e7b747a0d58d5fd6c5f57c6e3f}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!first\_cords@{first\_cords}}
+\index{first\_cords@{first\_cords}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{first\_cords}{first\_cords}}
+{\footnotesize\ttfamily bool first\+\_\+cords = true}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_ae66132fd7406f288add449f1655e3e45}\label{GPS__Code__SSE_8ino_ae66132fd7406f288add449f1655e3e45}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!GPS@{GPS}}
+\index{GPS@{GPS}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{GPS}{GPS}}
+{\footnotesize\ttfamily Tiny\+GPSPlus GPS}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_ae024163074f229a06b7ea69b190e466d}\label{GPS__Code__SSE_8ino_ae024163074f229a06b7ea69b190e466d}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!heading@{heading}}
+\index{heading@{heading}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{heading}{heading}}
+{\footnotesize\ttfamily double heading}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_a7972334534f68166121a6e51b0aac2d6}\label{GPS__Code__SSE_8ino_a7972334534f68166121a6e51b0aac2d6}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!lat@{lat}}
+\index{lat@{lat}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{lat}{lat}}
+{\footnotesize\ttfamily double lat}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_a786811151a534227205c5a102f772c9e}\label{GPS__Code__SSE_8ino_a786811151a534227205c5a102f772c9e}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!lng@{lng}}
+\index{lng@{lng}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{lng}{lng}}
+{\footnotesize\ttfamily double lng}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_a71d3a4fea86b556f34ca489bed45ed54}\label{GPS__Code__SSE_8ino_a71d3a4fea86b556f34ca489bed45ed54}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!prevlat@{prevlat}}
+\index{prevlat@{prevlat}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{prevlat}{prevlat}}
+{\footnotesize\ttfamily double prevlat}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_adf18cb33aa05b5fc8011c15aa4c6a842}\label{GPS__Code__SSE_8ino_adf18cb33aa05b5fc8011c15aa4c6a842}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!prevlng@{prevlng}}
+\index{prevlng@{prevlng}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{prevlng}{prevlng}}
+{\footnotesize\ttfamily double prevlng}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_a507704019ecebddb742907d5ef247e91}\label{GPS__Code__SSE_8ino_a507704019ecebddb742907d5ef247e91}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!sats@{sats}}
+\index{sats@{sats}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{sats}{sats}}
+{\footnotesize\ttfamily int sats}
+
+\mbox{\Hypertarget{GPS__Code__SSE_8ino_a6dc6e6f3c75c509ce943163afb5dade7}\label{GPS__Code__SSE_8ino_a6dc6e6f3c75c509ce943163afb5dade7}} 
+\index{GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}!speed@{speed}}
+\index{speed@{speed}!GPS\_Code\_SSE.ino@{GPS\_Code\_SSE.ino}}
+\doxysubsubsection{\texorpdfstring{speed}{speed}}
+{\footnotesize\ttfamily double speed}
+
