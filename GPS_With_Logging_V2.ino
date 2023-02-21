@@ -3,8 +3,9 @@
 #include <string.h>
 #include <SD.h>
 #include <SPI.h>
-
+// pin assignments
 const int chipSelect = 53;
+const int lapPin = 2;
 
 TinyGPSPlus GPS; // creates the gps object
 SoftwareSerial Display (12,13); // sets up the software Serial to digital pins 12 and 13
@@ -24,11 +25,15 @@ String fileName = "";
 String startHour;
 unsigned long Start_Time;
 unsigned long TOTTIME;
+unsigned long LAPTIME;
 int TOTMIN;
 int TOTSEC;
-
+int LAPMIN;
+int LAPSEC;
+int lapCount =0;
+unsigned long lapPoint;
 unsigned long prevTime;
-
+bool nextLap = false;
 bool first_cords = true; // used to set the prevlng and prevlat to the right starting value
 bool flag = true; // used for the creation of the folder 
 /**
@@ -58,11 +63,35 @@ void setup() {
    // Serial.println("Waiting for GPS to connect");  
     //delay(1000);  
   //}
-Serial.println("GPS connected");
-  
+  Serial.println("GPS connected");
+  Start_Time = millis();
+  lapPoint = millis();  
+  pinMode(lapPin, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(lapPin),lapEvent, RISING);
+}
+void lapEvent(){
+   nextLap = true; 
 }
 void Timers(){  
-  TOTTIME = millis();  
+  if(nextLap){
+    lapCount++; 
+    lapPoint = millis();
+    nextLap = false;      
+  } 
+  TOTTIME = millis() - Start_Time;
+  LAPTIME = TOTTIME -lapPoint;    
+  Display.print("TOTMIN.txt=\"" +normalizeTen(((TOTTIME / 1000)/60) % 60)+"\""); 
+  updateInfo();
+  TOTMIN = ((TOTTIME / 1000)/60) % 60;
+  Display.print("TOTSEC.txt=\"" +normalizeTen((TOTTIME/1000) % 60)+ "\""); // sends the distance value
+  updateInfo();
+  TOTSEC = ((TOTTIME/1000) % 60);
+   LAPMIN = ((LAPTIME / 1000)/60) % 60;
+   Display.print("LAPMIN.txt=\"" +normalizeTen(LAPMIN)+"\""); 
+  updateInfo();
+  LAPSEC = ((LAPTIME/1000) % 60);
+  Display.print("LAPSEC.txt=\"" +normalizeTen(LAPSEC)+ "\""); // sends the distance value
+  updateInfo();
 }
 void makeFolder(){ // makes the folder using the month and date
   Serial.println(GPS.date.month()); 
@@ -79,7 +108,9 @@ String dateTime(){
 }
 
 void setLog(){
-  dataString = dateTime() +","+ String(lng) +","+ String(lat) +","+ String(speed) +","+ String(distance) +","+ String(alt);  
+  dataString = normalizeTen(TOTMIN)+":"+ normalizeTen(TOTSEC) +","+normalizeTen(LAPMIN)+":"+
+   normalizeTen(LAPSEC) +","+ String(lapCount)+","+ String(lng) +","+
+   String(lat) +","+ String(speed) +","+ String(distance) +","+ String(alt);  
 }
 void SD_loop(){    
   if(flag){ // first run protocal
@@ -92,7 +123,7 @@ void SD_loop(){
     fileName.concat(".txt"); //saves as a txt file that can be imported into excell       
     flag = false;
     File logFile = SD.open(fileName, FILE_WRITE);
-    logFile.println("Time,Logitude,Latitude,Speed,Distance,Altitude"); // header of the file 
+    logFile.println("TOTTIME,LAPTIME,Lap,Logitude,Latitude,Speed,Distance,Altitude"); // header of the file 
     logFile.close();      
   }
   File logFile = SD.open(fileName, FILE_WRITE); // creates the file 
@@ -113,7 +144,7 @@ void SD_loop(){
 void GPS_loop() {
   // put your main code here, to run repeatedly:
     if(Serial2.available()>0){ // if the GPS data is availibe
-      GPS.encode(Serial2.read()); // sends the NHEMA setance to be parse
+      GPS.encode(Serial2.read()); // sends the NHEMA setance to be parsed
       if(GPS.location.isValid()){ // checks if the gps data is valid
         if(GPS.location.isUpdated()){ // if the data has been updated
           if(first_cords){ // first time protocal
@@ -166,8 +197,10 @@ String normalizeTen(int time) { // used for clock values just for looks
 }
 void loop(){ 
   GPS_loop();
+  
   if(millis()-prevTime>1000){ // only writes to the SD every second
-      SD_loop();
+      SD_loop(); 
+      Timers(); // timers function needs to be here because the millis() funtion uses interupts which messes with the way Serial communication works    
     prevTime = millis();      
-  }   
+  } 
 }
