@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['potpin_0',['potpin',['../SSE__Electronic__Throttle__Only_8ino.html#a07f4bc67036494356052ec9ebf521c0f',1,'SSE_Electronic_Throttle_Only.ino']]],
-  ['prevlat_1',['prevlat',['../GPS__Code__SSE_8ino.html#a71d3a4fea86b556f34ca489bed45ed54',1,'GPS_Code_SSE.ino']]],
-  ['prevlng_2',['prevlng',['../GPS__Code__SSE_8ino.html#adf18cb33aa05b5fc8011c15aa4c6a842',1,'GPS_Code_SSE.ino']]]
+  ['latitude_0',['latitude',['../GPS__Code__SSE_8ino.html#a76714bdbc5c536fa77dfb14533ff82a9',1,'GPS_Code_SSE.ino']]],
+  ['longitude_1',['longitude',['../GPS__Code__SSE_8ino.html#ac155e35fdeebafc89723a51520fb9fe6',1,'GPS_Code_SSE.ino']]],
+  ['loop_2',['loop',['../GPS__Code__SSE_8ino.html#afe461d27b9c48d5921c00d521181f12f',1,'loop():&#160;GPS_Code_SSE.ino'],['../SSE__Electronic__Throttle__Only_8ino.html#afe461d27b9c48d5921c00d521181f12f',1,'loop():&#160;SSE_Electronic_Throttle_Only.ino']]]
 ];

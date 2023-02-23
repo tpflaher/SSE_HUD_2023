@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['distance_0',['distance',['../GPS__Code__SSE_8ino.html#a79b8e036dca6911e3295a47d99f21f43',1,'GPS_Code_SSE.ino']]]
+  ['currdistbetween_0',['currDistBetween',['../GPS__Code__SSE_8ino.html#aced52006b922aee9b5446835c1815534',1,'GPS_Code_SSE.ino']]]
 ];

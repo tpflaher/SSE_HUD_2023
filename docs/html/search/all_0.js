@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['alt_0',['alt',['../GPS__Code__SSE_8ino.html#ad28150484129ecb23959cec99543698c',1,'GPS_Code_SSE.ino']]]
+  ['altitude_0',['altitude',['../GPS__Code__SSE_8ino.html#a2b13d276aee0d9fd646c8fa3647e869b',1,'GPS_Code_SSE.ino']]]
 ];

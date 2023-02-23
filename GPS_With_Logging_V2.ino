@@ -3,6 +3,7 @@
 #include <string.h>
 #include <SD.h>
 #include <SPI.h>
+
 // pin assignments
 const int chipSelect = 53;
 const int lapPin = 2;
@@ -11,31 +12,40 @@ TinyGPSPlus GPS; // creates the gps object
 SoftwareSerial Display (12,13); // sets up the software Serial to digital pins 12 and 13
 
 // global variables used to store data
-double lat;
-double lng;
-double prevlat;
-double prevlng;
-int sats;
+
+// for GPS data
+double latitude;
+double longitude;
+double previousLatitude;
+double previousLongitude;
+int satellites;
 double speed;
-double alt;
+double altitude;
 double heading;
 double distance;
+double currentDistanceBetween;
+bool firstCoords = true; // used to set the previousLongitude and previousLatitude to the right starting value
+
+// for logging
 String dataString;
 String fileName = "";
 String startHour;
-unsigned long Start_Time;
-unsigned long TOTTIME;
-unsigned long LAPTIME;
-int TOTMIN;
-int TOTSEC;
-int LAPMIN;
-int LAPSEC;
-int lapCount =0;
+//TODO: rename this
+bool flag = true; // used for the creation of the folder
+
+//for timers
+unsigned long startTime;
+unsigned long totalTime;
+unsigned long lapTime;
+int totalMinutes;
+int totalSeconds;
+int lapMinutes;
+int lapSeconds;
+int lapCount = 0;
 unsigned long lapPoint;
 unsigned long prevTime;
 bool nextLap = false;
-bool first_cords = true; // used to set the prevlng and prevlat to the right starting value
-bool flag = true; // used for the creation of the folder 
+
 /**
  * Default arduino function that runs once when the arduino is first powered/reset.
  * We use this function to start serial connections to the GPS and the Display
@@ -43,10 +53,12 @@ bool flag = true; // used for the creation of the folder
 void setup() {
   Serial2.begin(9600); // GPS port
   Display.begin(9600); // Display software serial
-  Serial.begin(9600); 
-  prevTime = millis();   
+  Serial.begin(9600);  // IO to files and system print
+  prevTime = millis();
+  //TODO: What is this for?
   startHour = String(GPS.time.hour());
   Serial.println(startHour);
+  //TODO: This is kinda cool! Do you think it would be worth doing this with the GPS stuff as well?
   while (!Serial) {
    // wait for serial port to connect. Needed for native USB port only
   } 
@@ -59,41 +71,46 @@ void setup() {
     while (1);
   }
   Serial.println("card initialized.");
- // while(GPS.location.lat() == 0){ //
+  // while(GPS.location.lat() == 0){ //
    // Serial.println("Waiting for GPS to connect");  
     //delay(1000);  
   //}
   Serial.println("GPS connected");
-  Start_Time = millis();
+  //TODO: is it OK for these two to be different values than prev time and each other?
+  //if not, you could set lap point to start time and save a millis interrupt
+  startTime = millis();
   lapPoint = millis();  
   pinMode(lapPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(lapPin),lapEvent, RISING);
 }
-void lapEvent(){
+
+void lapEvent() {
    nextLap = true; 
 }
-void Timers(){  
-  if(nextLap){
+
+void Timers() {
+  if (nextLap) {
     lapCount++; 
     lapPoint = millis();
     nextLap = false;      
   } 
-  TOTTIME = millis() - Start_Time;
-  LAPTIME = TOTTIME -lapPoint;    
-  Display.print("TOTMIN.txt=\"" +normalizeTen(((TOTTIME / 1000)/60) % 60)+"\""); 
-  updateInfo();
-  TOTMIN = ((TOTTIME / 1000)/60) % 60;
-  Display.print("TOTSEC.txt=\"" +normalizeTen((TOTTIME/1000) % 60)+ "\""); // sends the distance value
-  updateInfo();
-  TOTSEC = ((TOTTIME/1000) % 60);
-   LAPMIN = ((LAPTIME / 1000)/60) % 60;
-   Display.print("LAPMIN.txt=\"" +normalizeTen(LAPMIN)+"\""); 
-  updateInfo();
-  LAPSEC = ((LAPTIME/1000) % 60);
-  Display.print("LAPSEC.txt=\"" +normalizeTen(LAPSEC)+ "\""); // sends the distance value
-  updateInfo();
+  totalTime = millis() - startTime;
+  lapTime = totalTime - lapPoint;
+
+  totalMinutes = ((totalTime / 1000) / 60) % 60;
+  totalSeconds = ((totalTime / 1000) % 60);
+
+  setDisplayVar("TOTMIN", "txt", "\"" + normalizeTen(totalMinutes) + "\"");
+  setDisplayVar("TOTSEC", "txt", "\"" + normalizeTen(totalSeconds) + "\"");
+
+  lapMinutes = ((lapTime / 1000) / 60) % 60;
+  lapSeconds = ((lapTime / 1000) % 60);
+
+  setDisplayVar("LAPMIN", "txt", "\"" + normalizeTen(lapMinutes) + "\"");
+  setDisplayVar("LAPSET", "txt", "\"" + normalizeTen(lapSeconds) + "\"");
 }
-void makeFolder(){ // makes the folder using the month and date
+
+void makeFolder() { // makes the folder using the month and date
   Serial.println(GPS.date.month()); 
   fileName.concat(String(GPS.date.month()));
   fileName.concat("_");
@@ -103,27 +120,29 @@ void makeFolder(){ // makes the folder using the month and date
   fileName.concat(GPS.time.hour());
       
 }
-String dateTime(){
+
+String dateTime() {
   return String(GPS.time.hour()) + ":"+ String(GPS.time.minute())+ ":"+ String(GPS.time.second()); 
 }
 
-void setLog(){
-  dataString = normalizeTen(TOTMIN)+":"+ normalizeTen(TOTSEC) +","+normalizeTen(LAPMIN)+":"+
-   normalizeTen(LAPSEC) +","+ String(lapCount)+","+ String(lng) +","+
-   String(lat) +","+ String(speed) +","+ String(distance) +","+ String(alt);  
+void setLog() {
+  dataString = normalizeTen(totalMinutes)+":"+ normalizeTen(totalSeconds) +","+normalizeTen(lapMinutes)+":"+
+  normalizeTen(lapSeconds) +","+ String(lapCount)+","+ String(lng) +","+
+  String(lat) +","+ String(speed) +","+ String(distance) +","+ String(alt);
 }
-void SD_loop(){    
-  if(flag){ // first run protocal
+
+void SD_loop() {
+  if (flag) { // first run protocal
     makeFolder();
     Serial.println(fileName);
-    if(SD.exists(fileName)==1){ // checks if a run has happened in that hour 
+    if (SD.exists(fileName)==1) { // checks if a run has happened in that hour
       fileName.concat("_");
       fileName.concat(GPS.time.minute());           
     } 
     fileName.concat(".txt"); //saves as a txt file that can be imported into excell       
     flag = false;
     File logFile = SD.open(fileName, FILE_WRITE);
-    logFile.println("TOTTIME,LAPTIME,Lap,Logitude,Latitude,Speed,Distance,Altitude"); // header of the file 
+    logFile.println("totalTime,lapTime,Lap,Logitude,Latitude,Speed,Distance,Altitude"); // header of the file
     logFile.close();      
   }
   File logFile = SD.open(fileName, FILE_WRITE); // creates the file 
@@ -141,66 +160,84 @@ void SD_loop(){
     Serial.println("error opening the file");
   }  
 }
+
 void GPS_loop() {
-  // put your main code here, to run repeatedly:
-    if(Serial2.available()>0){ // if the GPS data is availibe
-      GPS.encode(Serial2.read()); // sends the NHEMA setance to be parsed
-      if(GPS.location.isValid()){ // checks if the gps data is valid
-        if(GPS.location.isUpdated()){ // if the data has been updated
-          if(first_cords){ // first time protocal
-            first_cords = false; // coverts it to false
-            prevlat = GPS.location.lat(); // sets the prev lat and long to correct values
-            prevlng = GPS.location.lng();
-          }
-          lat = GPS.location.lat(); // sets the variables that are wanted
-          lng = GPS.location.lng();
-          alt = GPS.altitude.feet();
-          speed = GPS.speed.mph();
-          sats = GPS.satellites.value();
-          heading = GPS.course.deg();
-
-          if(GPS.distanceBetween(prevlat,prevlng,lat,lng)>3) { // if the distance is above around 9ft
-             distance += (GPS.distanceBetween(prevlat,prevlng,lat,lng)/1610.0); // converts the meters to miles
-              prevlng = lng; // updates the prev values
-              prevlat = lat;
-              
-          setDisplayVar("Speed", displayFormatted(speed));
-          //speed = (int)(speed*10); // the display interprets doubles werid they need to be multipled by 10
-          //convert = (String) (int)speed; // converts it to a sting for the concatonation
-          //Display.print("Speed.val=" + convert); // sends speed value
-
-
-          setDisplayVar("Distance", displayFormatted(distance));
-          //dis_convert = (int) (distance * 10); // converts the value to an int
-          //convert = (String) dis_convert;
-          //Display.print("Distance.val=" + convert); // sends the distance value
-        }        
-      }
-    }
+  //check everything is good with the GPS before trying to run the main loop code
+  //if any of these checks fail the loop returns before the rest of the code can be run
+  if (Serial2.available() < 0) { // check if the GPS is available by checking if there is data in the buffer
+    Serial.print("GPS unavailable\n");
+    return;
   }
+
+  GPS.encode(Serial2.read()); // sends the NHEMA sentence to be parsed
+
+  if (not GPS.location.isValid()) { // checks if the GPS location is valid
+    Serial.print("GPS Bad Location\n");
+    return;
+  }
+
+  if (not GPS.location.isUpdated()) { // if the GPS data has been updated
+    Serial.print("GPS Location not updated\n");
+    return;
+  }
+
+  if (firstCoords) { // first time protocol
+    firstCoords = false; // coverts it to false
+    prevLatitude = GPS.location.lat(); // sets prevLatitude and prevLongitude to correct values
+    prevLongitude = GPS.location.lng();
+  }
+
+  // set the GPS variables
+  latitude = GPS.location.lat();
+  longitude = GPS.location.lng();
+  altitude = GPS.altitude.feet(); //the GPS altitude in feet
+  speed = GPS.speed.mph();
+  numberOfSatellites = GPS.satellites.value();
+  heading = GPS.course.deg();
+
+  //TODO: COMMENT THIS
+  currentDistanceBetween = GPS.distanceBetween(prevLatitude, prevLongitude,latitude, longitude);
+  if (currentDistanceBetween > 3) { // if the distance is above around 9ft
+    distance += currDistBetween / 1610.0; // converts the meters to miles
+    setDisplayVar("Distance", displayFormatted(distance));
+    prevLongitude = longitude; // updates the prev values
+    prevLatitude =latitude;
+  }
+
+  setDisplayVar("Speed", displayFormatted(speed));
 }
+
+/**
+ * Because the display interprets doubles weird, they need to be multiplied by 10
+ * and then sent as a string representation of an integer to be correctly rendered.
+ */
 String displayFormatted(double input) {
-  // the display interprets doubles werid they need to be multipled by 10
+  // the display interprets doubles weird they need to be multiplied by 10
   return (String) (int) (input * 10);
 }
-void setDisplayVar(String variable, String newValue) { 
-  Display.print(variable + ".val=" + newValue);
-  updateInfo();
-}
-void updateInfo() {
-  Display.write(0xff); // tells the display to update info
+
+void setDisplayVar(String variable, String type, String newValue) {
+  //send the updated value to the display
+  Display.print(variable + "." + type + "=" + newValue);
+  // tells the display to update info (not completely sure how...)
   Display.write(0xff);
   Display.write(0xff);
+  Display.write(0xff);
 }
+
 String normalizeTen(int time) { // used for clock values just for looks
-    return time < 10 ? ("0" + String(time)) : (String(time));
+  return time < 10 ? ("0" + String(time)) : (String(time));
 }
-void loop(){ 
+
+/**
+ * Default arduino function that runs repeatedly while the arduino is on.
+ */
+void loop() {
   GPS_loop();
   
-  if(millis()-prevTime>1000){ // only writes to the SD every second
-      SD_loop(); 
-      Timers(); // timers function needs to be here because the millis() funtion uses interupts which messes with the way Serial communication works    
+  if (millis()-prevTime>1000) { // only writes to the SD every second
+    SD_loop();
+    Timers(); // timers function needs to be here because the millis() funtion uses interupts which messes with the way Serial communication works
     prevTime = millis();      
   } 
 }
