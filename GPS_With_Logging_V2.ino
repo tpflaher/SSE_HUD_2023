@@ -4,6 +4,9 @@
 #include <SD.h>
 #include <SPI.h>
 
+//changes happened to the debug print statement, logging statement, and accelerometer method
+//added in to the loop
+
 // pin assignments
 const int chipSelect = 53;
 const int lapPin = 2;
@@ -53,12 +56,11 @@ bool nextLap = false;
 void setup() {
   Serial2.begin(9600); // GPS port
   Display.begin(9600); // Display software serial
-  Serial.begin(9600);  // IO to files and system print
+  Serial.begin(9600);  // IO for files and system print
   prevTime = millis();
   //TODO: What is this for?
   startHour = String(GPS.time.hour());
   Serial.println(startHour);
-  //TODO: This is kinda cool! Do you think it would be worth doing this with the GPS stuff as well?
   while (!Serial) {
    // wait for serial port to connect. Needed for native USB port only
   } 
@@ -76,10 +78,8 @@ void setup() {
     //delay(1000);  
   //}
   Serial.println("GPS connected");
-  //TODO: is it OK for these two to be different values than prev time and each other?
-  //if not, you could set lap point to start time and save a millis interrupt
   startTime = millis();
-  lapPoint = millis();  
+  lapPoint = startTime;
   pinMode(lapPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(lapPin),lapEvent, RISING);
 }
@@ -142,7 +142,7 @@ void SD_loop() {
     fileName.concat(".txt"); //saves as a txt file that can be imported into excell       
     flag = false;
     File logFile = SD.open(fileName, FILE_WRITE);
-    logFile.println("totalTime,lapTime,Lap,Logitude,Latitude,Speed,Distance,Altitude"); // header of the file
+    logFile.println("totalTime,lapTime,Lap,Longitude,Latitude,Speed,Distance,Altitude"); // header of the file
     logFile.close();      
   }
   File logFile = SD.open(fileName, FILE_WRITE); // creates the file 
@@ -199,12 +199,12 @@ void GPS_loop() {
   currentDistanceBetween = GPS.distanceBetween(prevLatitude, prevLongitude,latitude, longitude);
   if (currentDistanceBetween > 3) { // if the distance is above around 9ft
     distance += currDistBetween / 1610.0; // converts the meters to miles
-    setDisplayVar("Distance", displayFormatted(distance));
+    setDisplayVar("Distance", "val", displayFormatted(distance));
     prevLongitude = longitude; // updates the prev values
-    prevLatitude =latitude;
+    prevLatitude = latitude;
   }
 
-  setDisplayVar("Speed", displayFormatted(speed));
+  setDisplayVar("Speed", "val", displayFormatted(speed));
 }
 
 /**
