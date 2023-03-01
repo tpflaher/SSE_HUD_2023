@@ -3,14 +3,14 @@
 #include <string.h>
 #include <SD.h>
 #include <SPI.h>
-
-//changes happened to the debug print statement, logging statement, and accelerometer method
-//added in to the loop
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
 
 // pin assignments
 const int chipSelect = 53;
 const int lapPin = 2;
 
+Adafruit_MPU6050 mpu;
 TinyGPSPlus GPS; // creates the gps object
 SoftwareSerial Display (12,13); // sets up the software Serial to digital pins 12 and 13
 
@@ -27,14 +27,11 @@ double altitude;
 double heading;
 double distance;
 double currentDistanceBetween;
-bool firstCoords = true; // used to set the previousLongitude and previousLatitude to the right starting value
 
 // for logging
 String dataString;
 String fileName = "";
 String startHour;
-//TODO: rename this
-bool flag = true; // used for the creation of the folder
 
 //for timers
 unsigned long startTime;
@@ -48,17 +45,25 @@ int lapCount = 0;
 unsigned long lapPoint;
 unsigned long prevTime;
 bool nextLap = false;
-
+bool first_cords = true; // used to set the prevlng and prevlat to the right starting value
+bool flag = true; // used for the creation of the folder
+const int MPU_addr=0x68;
+int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
+int minVal=265;
+int maxVal=402;
+double x;
+double y;
+double z;
 /**
  * Default arduino function that runs once when the arduino is first powered/reset.
  * We use this function to start serial connections to the GPS and the Display
  */
 void setup() {
   Serial2.begin(9600); // GPS port
+  Serial1.begin(115200);
   Display.begin(9600); // Display software serial
-  Serial.begin(9600);  // IO for files and system print
+  Serial.begin(9600);
   prevTime = millis();
-  //TODO: What is this for?
   startHour = String(GPS.time.hour());
   Serial.println(startHour);
   while (!Serial) {
@@ -77,14 +82,76 @@ void setup() {
    // Serial.println("Waiting for GPS to connect");  
     //delay(1000);  
   //}
+   if (!mpu.begin()) {
+    Serial.println("Failed to find MPU6050 chip");
+   }
   Serial.println("GPS connected");
   startTime = millis();
   lapPoint = startTime;
   pinMode(lapPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(lapPin),lapEvent, RISING);
-}
+mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+  Serial.print("Accelerometer range set to: ");
+  switch (mpu.getAccelerometerRange()) {
+  case MPU6050_RANGE_2_G:
+    Serial.println("+-2G");
+    break;
+  case MPU6050_RANGE_4_G:
+    Serial.println("+-4G");
+    break;
+  case MPU6050_RANGE_8_G:
+    Serial.println("+-8G");
+    break;
+  case MPU6050_RANGE_16_G:
+    Serial.println("+-16G");
+    break;
+  }
+  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+  Serial.print("Gyro range set to: ");
+  switch (mpu.getGyroRange()) {
+  case MPU6050_RANGE_250_DEG:
+    Serial.println("+- 250 deg/s");
+    break;
+  case MPU6050_RANGE_500_DEG:
+    Serial.println("+- 500 deg/s");
+    break;
+  case MPU6050_RANGE_1000_DEG:
+    Serial.println("+- 1000 deg/s");
+    break;
+  case MPU6050_RANGE_2000_DEG:
+    Serial.println("+- 2000 deg/s");
+    break;
+  }
 
-void lapEvent() {
+  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
+  Serial.print("Filter bandwidth set to: ");
+  switch (mpu.getFilterBandwidth()) {
+  case MPU6050_BAND_260_HZ:
+    Serial.println("260 Hz");
+    break;
+  case MPU6050_BAND_184_HZ:
+    Serial.println("184 Hz");
+    break;
+  case MPU6050_BAND_94_HZ:
+    Serial.println("94 Hz");
+    break;
+  case MPU6050_BAND_44_HZ:
+    Serial.println("44 Hz");
+    break;
+  case MPU6050_BAND_21_HZ:
+    Serial.println("21 Hz");
+    break;
+  case MPU6050_BAND_10_HZ:
+    Serial.println("10 Hz");
+    break;
+  case MPU6050_BAND_5_HZ:
+    Serial.println("5 Hz");
+    break;
+  }
+ sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+}
+void lapEvent(){
    nextLap = true; 
 }
 
@@ -126,9 +193,13 @@ String dateTime() {
 }
 
 void setLog() {
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
   dataString = normalizeTen(totalMinutes)+":"+ normalizeTen(totalSeconds) +","+normalizeTen(lapMinutes)+":"+
   normalizeTen(lapSeconds) +","+ String(lapCount)+","+ String(lng) +","+
-  String(lat) +","+ String(speed) +","+ String(distance) +","+ String(alt);
+  String(latitude) +","+ String(speed) +","+ String(distance) +","+ String(altitude) + ","+ String(a.acceleration.x)+ "," +String(a.acceleration.y)+","+
+  String(a.acceleration.z)+ ","+ String(x)+ "," + String(y) + "," + String(z)+ "," + String(g.gyro.roll) + ","+
+  g.gyro.pitch+ "," + g.gyro.heading);
 }
 
 void SD_loop() {
@@ -206,11 +277,22 @@ void GPS_loop() {
 
   setDisplayVar("Speed", "val", displayFormatted(speed));
 }
+void angle_Loop(){ // loop for the angle and acceleration
+  Wire.beginTransmission(MPU_addr);
+  Wire.write(0x3B);
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU_addr,19,true);
+  AcX=Wire.read()<<8|Wire.read();
+  AcY=Wire.read()<<8|Wire.read();
+  AcZ=Wire.read()<<8|Wire.read();
+  int xAng = map(AcX,minVal,maxVal,-90,90);
+  int yAng = map(AcY,minVal,maxVal,-90,90);
+  int zAng = map(AcZ,minVal,maxVal,-90,90);
 
-/**
- * Because the display interprets doubles weird, they need to be multiplied by 10
- * and then sent as a string representation of an integer to be correctly rendered.
- */
+  x= RAD_TO_DEG * (atan2(-yAng, -zAng)+PI);
+  y= RAD_TO_DEG * (atan2(-xAng, -zAng)+PI);
+  z= RAD_TO_DEG * (atan2(-yAng, -xAng)+PI);
+}
 String displayFormatted(double input) {
   // the display interprets doubles weird they need to be multiplied by 10
   return (String) (int) (input * 10);
@@ -234,7 +316,8 @@ String normalizeTen(int time) { // used for clock values just for looks
  */
 void loop() {
   GPS_loop();
-  
+
+  angle_Loop();
   if (millis()-prevTime>1000) { // only writes to the SD every second
     SD_loop();
     Timers(); // timers function needs to be here because the millis() funtion uses interupts which messes with the way Serial communication works
