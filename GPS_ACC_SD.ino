@@ -21,7 +21,7 @@ double latitude;
 double longitude;
 double previousLatitude;
 double previousLongitude;
-int satellites;
+int numberOfSatellites;
 double speed;
 double altitude;
 double heading;
@@ -45,7 +45,7 @@ int lapCount = 0;
 unsigned long lapPoint;
 unsigned long prevTime;
 bool nextLap = false;
-bool first_cords = true; // used to set the prevlng and prevlat to the right starting value
+bool firstCoords = true; // used to set the prevlng and prevlat to the right starting value
 bool flag = true; // used for the creation of the folder
 const int MPU_addr=0x68;
 int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
@@ -197,21 +197,21 @@ void setLog() {
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp); 
   dataString = normalizeTen(totalMinutes)+":"+ normalizeTen(totalSeconds) +","+normalizeTen(lapMinutes)+":"+
-  normalizeTen(lapSeconds) +","+ String(lapCount)+","+ String(longitude) +","+
-  String(latitude) +","+ String(speed) +","+ String(distance) +","+ String(altitude) + ","+ String(a.acceleration.x)+ "," +String(a.acceleration.y)+","+
+  normalizeTen(lapSeconds) +","+ String(lapCount)+","+ String(latitude) +","+
+  String(longitude) +","+ String(speed) +","+ String(distance) +","+ String(altitude) + ","+ String(a.acceleration.x)+ "," +String(a.acceleration.y)+","+
   String(a.acceleration.z)+ ","+ String(x)+ "," + String(y) + "," + String(z)+ "," + String(g.gyro.roll) + ","+
-  g.gyro.pitch+ "," + g.gyro.heading);
+  g.gyro.pitch+ "," + g.gyro.heading;
 }
 
 void SD_loop() {
-  if (flag) { // first run protocal
+  if (flag) { // first run protocol
     makeFolder();
     Serial.println(fileName);
     if (SD.exists(fileName)==1) { // checks if a run has happened in that hour
       fileName.concat("_");
       fileName.concat(GPS.time.minute());           
     } 
-    fileName.concat(".txt"); //saves as a txt file that can be imported into excell       
+    fileName.concat(".txt"); //saves as a txt file that can be imported into excel
     flag = false;
     File logFile = SD.open(fileName, FILE_WRITE);
     logFile.println("totalTime,lapTime,Lap,Longitude,Latitude,Speed,Distance,Altitude"); // header of the file
@@ -255,8 +255,8 @@ void GPS_loop() {
 
   if (firstCoords) { // first time protocol
     firstCoords = false; // coverts it to false
-    prevLatitude = GPS.location.lat(); // sets prevLatitude and prevLongitude to correct values
-    prevLongitude = GPS.location.lng();
+    previousLatitude = GPS.location.lat(); // sets prevLatitude and prevLongitude to correct values
+    previousLongitude = GPS.location.lng();
   }
 
   // set the GPS variables
@@ -268,12 +268,12 @@ void GPS_loop() {
   heading = GPS.course.deg();
 
   //TODO: COMMENT THIS
-  currentDistanceBetween = GPS.distanceBetween(prevLatitude, prevLongitude,latitude, longitude);
+  currentDistanceBetween = GPS.distanceBetween(previousLatitude, previousLongitude,latitude, longitude);
   if (currentDistanceBetween > 3) { // if the distance is above around 9ft
-    distance += currDistBetween / 1610.0; // converts the meters to miles
+    distance += currentDistanceBetween / 1610.0; // converts the meters to miles
     setDisplayVar("Distance", "val", displayFormatted(distance));
-    prevLongitude = longitude; // updates the prev values
-    prevLatitude = latitude;
+    previousLongitude = longitude; // updates the prev values
+    previousLatitude = latitude;
   }
 
   setDisplayVar("Speed", "val", displayFormatted(speed));
