@@ -7,12 +7,15 @@
 #include <Adafruit_Sensor.h>
 
 // pin assignments
-const int chipSelect = 53;
+const int chipSelect = 53; //TODO: description
+/** The pin indicating if the lap button is being pressed */
 const int lapPin = 2;
 
-Adafruit_MPU6050 mpu;
-TinyGPSPlus GPS; // creates the gps object
-SoftwareSerial Display (12,13); // sets up the software Serial to digital pins 12 and 13
+Adafruit_MPU6050 mpu; //TODO: description
+/** Creates the GPS object */ //TODO: revisit this description
+TinyGPSPlus GPS;
+/** Defines the SoftwareSerial object Display, and binds it to the digital pins 12 and 13 */
+SoftwareSerial Display (12,13);
 
 // global variables used to store data
 
@@ -45,8 +48,10 @@ int lapCount = 0;
 unsigned long lapPoint;
 unsigned long prevTime;
 bool nextLap = false;
-bool firstCoords = true; // used to set the prevlng and prevlat to the right starting value
-bool flag = true; // used for the creation of the folder
+/** Used to set previousLatitude and previousLongitude to the right starting values */
+bool firstCoords = true;
+/** Used for the creation of the folder */
+bool flag = true; //TODO: rename variable and rewrite its description
 const int MPU_addr=0x68;
 int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
 int minVal=265;
@@ -54,11 +59,13 @@ int maxVal=402;
 double x;
 double y;
 double z;
+
 /**
  * Default arduino function that runs once when the arduino is first powered/reset.
- * We use this function to start serial connections to the GPS and the Display
+ * We use this function to start serial connections to the GPS and the Display.
+ * TODO: and a whole bunch of other stuff...
  */
-void setup() {
+void setup() { //TODO: break this up into functions for readability
   Serial2.begin(9600); // GPS port
   Serial1.begin(115200);
   Display.begin(9600); // Display software serial
@@ -78,7 +85,7 @@ void setup() {
     while (1);
   }
   Serial.println("card initialized.");
-  // while(GPS.location.lat() == 0){ //
+  // while(GPS.location.lat() == 0){
    // Serial.println("Waiting for GPS to connect");  
     //delay(1000);  
   //}
@@ -152,10 +159,18 @@ mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
   mpu.getEvent(&a, &g, &temp);    
 }
 
+/**
+ * Called via interrupt when the lap button is pressed.
+ * Sets the value of nextLap to true so that functionality can be handled on the next loop of the code.
+ * @param[out] nextLap The boolean that is set to true when this function is called
+ */
 void lapEvent() {
    nextLap = true; 
 }
 
+/**
+ * Sets the values of the timer components on the Display.
+ */
 void Timers() {
   if (nextLap) {
     lapCount++; 
@@ -168,41 +183,58 @@ void Timers() {
   totalMinutes = ((totalTime / 1000) / 60) % 60;
   totalSeconds = ((totalTime / 1000) % 60);
 
-  setDisplayVar("TOTMIN", "txt", "\"" + normalizeTen(totalMinutes) + "\"");
-  setDisplayVar("TOTSEC", "txt", "\"" + normalizeTen(totalSeconds) + "\"");
+  setDisplayVariable("TOTMIN", "txt", "\"" + normalizeTen(totalMinutes) + "\"");
+  setDisplayVariable("TOTSEC", "txt", "\"" + normalizeTen(totalSeconds) + "\"");
 
   lapMinutes = ((lapTime / 1000) / 60) % 60;
   lapSeconds = ((lapTime / 1000) % 60);
 
-  setDisplayVar("LAPMIN", "txt", "\"" + normalizeTen(lapMinutes) + "\"");
-  setDisplayVar("LAPSET", "txt", "\"" + normalizeTen(lapSeconds) + "\"");
+  setDisplayVariable("LAPMIN", "txt", "\"" + normalizeTen(lapMinutes) + "\"");
+  setDisplayVariable("LAPSET", "txt", "\"" + normalizeTen(lapSeconds) + "\"");
 }
 
+/**
+ * TODO: is this accurate?
+ * Makes a unique folder in the SD card storage named MONTH_DAY/HOUR.
+ */
 void makeFolder() { // makes the folder using the month and date
   Serial.println(GPS.date.month()); 
   fileName.concat(String(GPS.date.month()));
   fileName.concat("_");
   fileName.concat(String(GPS.date.day()));
+  //TODO: I don't understand what is happening here
   SD.mkdir(fileName);
   fileName.concat("/");
   fileName.concat(GPS.time.hour());
       
 }
 
-String dateTime() {
+/**
+ * Returns the current time as a String formatted as HH:MM:SS.
+ * @return The current time as a String formatted as HH:MM:SS
+ */
+String dateTime() { //TODO: rename this since it doesn't give the date?
   return String(GPS.time.hour()) + ":"+ String(GPS.time.minute())+ ":"+ String(GPS.time.second()); 
 }
 
+/**
+ * Writes all relevant log data to the dataString variable in CSV format.
+ * @param[out] dataString updated with a relevant log data in CSV format
+ */
 void setLog() {
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp); 
   dataString = normalizeTen(totalMinutes)+":"+ normalizeTen(totalSeconds) +","+normalizeTen(lapMinutes)+":"+
   normalizeTen(lapSeconds) +","+ String(lapCount)+","+ String(latitude) +","+
-  String(longitude) +","+ String(speed) +","+ String(distance) +","+ String(altitude) + ","+ String(a.acceleration.x)+ "," +String(a.acceleration.y)+","+
-  String(a.acceleration.z)+ ","+ String(x)+ "," + String(y) + "," + String(z)+ "," + String(g.gyro.roll) + ","+
-  g.gyro.pitch+ "," + g.gyro.heading;
+  String(longitude) +","+ String(speed) +","+ String(distance) +","+
+  String(altitude) + ","+ String(a.acceleration.x)+ "," +String(a.acceleration.y)+","+
+  String(a.acceleration.z)+ ","+ String(x)+ "," + String(y) + "," +
+  String(z)+ "," + String(g.gyro.roll) + ","+ g.gyro.pitch + "," + g.gyro.heading;
 }
 
+/**
+ * Makes a log file, and then writes data to it with each loop
+ */
 void SD_loop() {
   if (flag) { // first run protocol
     makeFolder();
@@ -233,33 +265,43 @@ void SD_loop() {
   }  
 }
 
+/**
+ * Updates the Display with current information from the GPS
+ */
 void GPS_loop() {
   //check everything is good with the GPS before trying to run the main loop code
   //if any of these checks fail the loop returns before the rest of the code can be run
-  if (Serial2.available() < 0) { // check if the GPS is available by checking if there is data in the buffer
+
+  //check if the GPS is available by checking if there is data in the buffer
+  if (Serial2.available() < 0) {
     Serial.print("GPS unavailable\n");
     return;
   }
 
-  GPS.encode(Serial2.read()); // sends the NHEMA sentence to be parsed
+  //sends the NHEMA sentence to be parsed
+  GPS.encode(Serial2.read());
 
-  if (not GPS.location.isValid()) { // checks if the GPS location is valid
+  //checks if the GPS location is valid
+  if (not GPS.location.isValid()) {
     Serial.print("GPS Bad Location\n");
     return;
   }
 
-  if (not GPS.location.isUpdated()) { // if the GPS data has been updated
+  //checks if the GPS data has been updated
+  if (not GPS.location.isUpdated()) {
     Serial.print("GPS Location not updated\n");
     return;
   }
 
-  if (firstCoords) { // first time protocol
-    firstCoords = false; // coverts it to false
-    previousLatitude = GPS.location.lat(); // sets prevLatitude and prevLongitude to correct values
+  //first time protocol
+  if (firstCoords) {
+    firstCoords = false; //sets this flag so that this code is skipped for the rest of the code's runtime
+    // sets prevLatitude and prevLongitude to correct values
+    previousLatitude = GPS.location.lat();
     previousLongitude = GPS.location.lng();
   }
 
-  // set the GPS variables
+  //set the GPS variables
   latitude = GPS.location.lat();
   longitude = GPS.location.lng();
   altitude = GPS.altitude.feet(); //the GPS altitude in feet
@@ -271,15 +313,21 @@ void GPS_loop() {
   currentDistanceBetween = GPS.distanceBetween(previousLatitude, previousLongitude,latitude, longitude);
   if (currentDistanceBetween > 3) { // if the distance is above around 9ft
     distance += currentDistanceBetween / 1610.0; // converts the meters to miles
-    setDisplayVar("Distance", "val", displayFormatted(distance));
+    setDisplayVariable("Distance", "val", displayFormatted(distance));
     previousLongitude = longitude; // updates the prev values
     previousLatitude = latitude;
   }
 
-  setDisplayVar("Speed", "val", displayFormatted(speed));
+  setDisplayVariable("Speed", "val", displayFormatted(speed));
 }
 
-void angle_Loop() { // loop for the angle and acceleration
+/**
+ * Updates the angle and acceleration TODO: where is acceleration updated?
+ * @param[out] x the x component of angular acceleration?
+ * @param[out] y the y component of angular acceleration?
+ * @param[out] z the z component of angular acceleration?
+ */
+void angleLoop() { // loop for the angle and acceleration
   Wire.beginTransmission(MPU_addr);
   Wire.write(0x3B);
   Wire.endTransmission(false);
@@ -288,29 +336,47 @@ void angle_Loop() { // loop for the angle and acceleration
   AcY=Wire.read()<<8|Wire.read();
   AcZ=Wire.read()<<8|Wire.read();
   int xAng = map(AcX,minVal,maxVal,-90,90);
-  int yAng = map(AcY,minVal,maxVal,-90,90);
+  int yAng = map(AcY,minVal,maxVal,-90,90);=
   int zAng = map(AcZ,minVal,maxVal,-90,90);
  
-  x= RAD_TO_DEG * (atan2(-yAng, -zAng)+PI);
-  y= RAD_TO_DEG * (atan2(-xAng, -zAng)+PI);
-  z= RAD_TO_DEG * (atan2(-yAng, -xAng)+PI);
+  x = RAD_TO_DEG * (atan2(-yAng, -zAng)+PI);
+  y = RAD_TO_DEG * (atan2(-xAng, -zAng)+PI);
+  z = RAD_TO_DEG * (atan2(-yAng, -xAng)+PI);
 }
 
+/** TODO: CHANGE "INTERPRETS DOUBLES WEIRD" TO AN ACTUAL EXPLANATION
+ * Because the display interprets doubles weird, they need to be multiplied by 10
+ * and then sent as a string representation of an integer to be correctly rendered.
+ * @param input the value to be formatted
+ * @return a String representation of the input double that renders correctly on the Heads Up Display
+ */
 String displayFormatted(double input) {
   // the display interprets doubles weird they need to be multiplied by 10
   return (String) (int) (input * 10);
 }
 
-void setDisplayVar(String variable, String type, String newValue) {
+/**
+ * Sets a variable on the Heads Up Display to a given value.
+ * @param variable the String name of the variable (set in the Nextion software) to set the value of
+ * @param type the data type of the variable being updated, "val" for numbers, "txt" for text
+ * @param newValue the new value to set the variable to
+ */
+void setDisplayVariable(String variable, String type, String newValue) {
   //send the updated value to the display
   Display.print(variable + "." + type + "=" + newValue);
-  // tells the display to update info (not completely sure how...)
+  //tells the display to update info (not completely sure how...)
   Display.write(0xff);
   Display.write(0xff);
   Display.write(0xff);
 }
 
-String normalizeTen(int time) { // used for clock values just for looks
+/**
+ * Adds a leading zero to the input number if it is less than 10.
+ * Used to make the clock values look better.
+ * @param time the time to potentially add a leading zero to
+ * @return a String representation of the number, including leading zero if needed
+ */
+String normalizeTen(int time) {
   return time < 10 ? ("0" + String(time)) : (String(time));
 }
 
@@ -320,10 +386,11 @@ String normalizeTen(int time) { // used for clock values just for looks
 void loop() {
   GPS_loop();
 
-  angle_Loop();
+  angleLoop();
   if (millis()-prevTime>1000) { // only writes to the SD every second
     SD_loop();
-    Timers(); // timers function needs to be here because the millis() funtion uses interupts which messes with the way Serial communication works
+    // timers function needs to be here because the millis() function uses interrupts which messes with the way Serial communication works
+    Timers();
     prevTime = millis();      
   } 
 }

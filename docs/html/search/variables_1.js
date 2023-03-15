@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['currdistbetween_0',['currDistBetween',['../GPS__Code__SSE_8ino.html#aced52006b922aee9b5446835c1815534',1,'GPS_Code_SSE.ino']]]
+  ['buff_0',['buff',['../RS232__code_8ino.html#a16b1ddb4232b0401d3f07c1515f1d2dd',1,'RS232_code.ino']]]
 ];
