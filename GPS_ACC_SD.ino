@@ -336,7 +336,7 @@ void angleLoop() { // loop for the angle and acceleration
   AcY=Wire.read()<<8|Wire.read();
   AcZ=Wire.read()<<8|Wire.read();
   int xAng = map(AcX,minVal,maxVal,-90,90);
-  int yAng = map(AcY,minVal,maxVal,-90,90);=
+  int yAng = map(AcY,minVal,maxVal,-90,90);
   int zAng = map(AcZ,minVal,maxVal,-90,90);
  
   x = RAD_TO_DEG * (atan2(-yAng, -zAng)+PI);
