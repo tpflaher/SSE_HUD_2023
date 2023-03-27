@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['distance_0',['distance',['../GPS__Code__SSE_8ino.html#a79b8e036dca6911e3295a47d99f21f43',1,'GPS_Code_SSE.ino']]]
+  ['buff_0',['buff',['../RS232__code_8ino.html#a16b1ddb4232b0401d3f07c1515f1d2dd',1,'RS232_code.ino']]]
 ];

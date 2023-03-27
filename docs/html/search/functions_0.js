@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['display_0',['Display',['../GPS__Code__SSE_8ino.html#a32f7946ffc898b20669450af82f177d7',1,'GPS_Code_SSE.ino']]],
-  ['displayformatted_1',['displayFormatted',['../GPS__Code__SSE_8ino.html#a2adbbdfa497c424c55b7d48622331311',1,'GPS_Code_SSE.ino']]]
+  ['angle_5floop_0',['angle_Loop',['../GPS__With__Logging__V2_8ino.html#a5f63dbbc7b4e857712c47d8510530e92',1,'GPS_With_Logging_V2.ino']]],
+  ['angleloop_1',['angleLoop',['../GPS__ACC__SD_8ino.html#aa089da1c517de68107b17fc34f25fcab',1,'GPS_ACC_SD.ino']]]
 ];

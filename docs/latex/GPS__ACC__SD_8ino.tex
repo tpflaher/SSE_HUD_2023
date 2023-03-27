@@ -1,0 +1,524 @@
+\hypertarget{GPS__ACC__SD_8ino}{}\doxysection{GPS\+\_\+\+ACC\+\_\+\+SD.\+ino File Reference}
+\label{GPS__ACC__SD_8ino}\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+{\ttfamily \#include $<$Tiny\+GPS++.\+h$>$}\newline
+{\ttfamily \#include $<$Software\+Serial.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$SD.\+h$>$}\newline
+{\ttfamily \#include $<$SPI.\+h$>$}\newline
+{\ttfamily \#include $<$Adafruit\+\_\+\+MPU6050.\+h$>$}\newline
+{\ttfamily \#include $<$Adafruit\+\_\+\+Sensor.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Software\+Serial \mbox{\hyperlink{GPS__ACC__SD_8ino_a32f7946ffc898b20669450af82f177d7}{Display}} (12, 13)
+\item 
+void \mbox{\hyperlink{GPS__ACC__SD_8ino_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\item 
+void \mbox{\hyperlink{GPS__ACC__SD_8ino_aac086e13ab83f79870def3a2d1838fb6}{lap\+Event}} ()
+\item 
+void \mbox{\hyperlink{GPS__ACC__SD_8ino_a1d0f0a78093c02310ff22c3efeeee1d2}{Timers}} ()
+\item 
+void \mbox{\hyperlink{GPS__ACC__SD_8ino_a15cf00a78bfe45e38b23e3120d289521}{make\+Folder}} ()
+\item 
+String \mbox{\hyperlink{GPS__ACC__SD_8ino_aa2aef41d8fcb263c3d1034261502d911}{date\+Time}} ()
+\item 
+void \mbox{\hyperlink{GPS__ACC__SD_8ino_a1a79615cebc6a6756b192099ce322656}{set\+Log}} ()
+\item 
+void \mbox{\hyperlink{GPS__ACC__SD_8ino_a7e1df6ba33b2e1b8824cb92a3ec7ae71}{SD\+\_\+loop}} ()
+\item 
+void \mbox{\hyperlink{GPS__ACC__SD_8ino_a2612ee2e01ac372b9847e46834b46800}{GPS\+\_\+loop}} ()
+\item 
+void \mbox{\hyperlink{GPS__ACC__SD_8ino_aa089da1c517de68107b17fc34f25fcab}{angle\+Loop}} ()
+\item 
+String \mbox{\hyperlink{GPS__ACC__SD_8ino_a2adbbdfa497c424c55b7d48622331311}{display\+Formatted}} (double input)
+\item 
+void \mbox{\hyperlink{GPS__ACC__SD_8ino_accb474d49cd9bf12d0570591b7f8fe2e}{set\+Display\+Variable}} (String variable, String type, String new\+Value)
+\item 
+String \mbox{\hyperlink{GPS__ACC__SD_8ino_a672b86dff195b74fe73753a7dae95801}{normalize\+Ten}} (int time)
+\item 
+void \mbox{\hyperlink{GPS__ACC__SD_8ino_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const int \mbox{\hyperlink{GPS__ACC__SD_8ino_a266db0f4dbdfbc06ea34c96f66bebed3}{chip\+Select}} = 53
+\item 
+const int \mbox{\hyperlink{GPS__ACC__SD_8ino_a788f2a232e0556f89c8cd677963c803d}{lap\+Pin}} = 2
+\item 
+Adafruit\+\_\+\+MPU6050 \mbox{\hyperlink{GPS__ACC__SD_8ino_a51e3744ca22ee86001a2094dc4fdf697}{mpu}}
+\item 
+Tiny\+GPSPlus \mbox{\hyperlink{GPS__ACC__SD_8ino_ae66132fd7406f288add449f1655e3e45}{GPS}}
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_a76714bdbc5c536fa77dfb14533ff82a9}{latitude}}
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_ac155e35fdeebafc89723a51520fb9fe6}{longitude}}
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_af5cbe348d725709e7d3ada96422e04d8}{previous\+Latitude}}
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_a3c87e8abead8833a75225ffefa9dbfe0}{previous\+Longitude}}
+\item 
+int \mbox{\hyperlink{GPS__ACC__SD_8ino_ad42797b9aa98fc3b4f0c9379d5058a10}{number\+Of\+Satellites}}
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_a6dc6e6f3c75c509ce943163afb5dade7}{speed}}
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_a2b13d276aee0d9fd646c8fa3647e869b}{altitude}}
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_ae024163074f229a06b7ea69b190e466d}{heading}}
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_a79b8e036dca6911e3295a47d99f21f43}{distance}}
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_a52b0acffc0e632327281d0e59938c7b4}{current\+Distance\+Between}}
+\item 
+String \mbox{\hyperlink{GPS__ACC__SD_8ino_a3988632db9dced8a44ae0810eca7c8ff}{data\+String}}
+\item 
+String \mbox{\hyperlink{GPS__ACC__SD_8ino_a3a5f56162810aa1e371620c4c18cc82a}{file\+Name}} = \char`\"{}\char`\"{}
+\item 
+String \mbox{\hyperlink{GPS__ACC__SD_8ino_a6e5adc980324a6e0b9350c96e3da48c2}{start\+Hour}}
+\item 
+unsigned long \mbox{\hyperlink{GPS__ACC__SD_8ino_a0e06ecdad9f318fafbb0b28370c3cfef}{start\+Time}}
+\item 
+unsigned long \mbox{\hyperlink{GPS__ACC__SD_8ino_aa9bee177659c837ed71df703dd1624f9}{total\+Time}}
+\item 
+unsigned long \mbox{\hyperlink{GPS__ACC__SD_8ino_a2b1012784ed532a1e3584a3b0b00cc75}{lap\+Time}}
+\item 
+int \mbox{\hyperlink{GPS__ACC__SD_8ino_ab332187e3f86b9b7e418b7271c03eade}{total\+Minutes}}
+\item 
+int \mbox{\hyperlink{GPS__ACC__SD_8ino_a31be2ec7a2d2c8fc93799d578b409b6e}{total\+Seconds}}
+\item 
+int \mbox{\hyperlink{GPS__ACC__SD_8ino_a5429e962e466eab02e0de24e124efd1c}{lap\+Minutes}}
+\item 
+int \mbox{\hyperlink{GPS__ACC__SD_8ino_a86b471611c9e06f36cb3e1ed59809b7a}{lap\+Seconds}}
+\item 
+int \mbox{\hyperlink{GPS__ACC__SD_8ino_a846d1ac47c0cc2369797b454c23b335a}{lap\+Count}} = 0
+\item 
+unsigned long \mbox{\hyperlink{GPS__ACC__SD_8ino_a557dace973da8d44ba499ef2f7aab32d}{lap\+Point}}
+\item 
+unsigned long \mbox{\hyperlink{GPS__ACC__SD_8ino_a628c85623f767d1052f5bee5ad05b87f}{prev\+Time}}
+\item 
+bool \mbox{\hyperlink{GPS__ACC__SD_8ino_a8a15f134e676a4f3a86827f62fffd3c3}{next\+Lap}} = false
+\item 
+bool \mbox{\hyperlink{GPS__ACC__SD_8ino_aeceec268f0865b3184dfb92ece32cb2e}{first\+Coords}} = true
+\item 
+bool \mbox{\hyperlink{GPS__ACC__SD_8ino_a8b3ab54ed3e81c69863d65e4e6c424a0}{flag}} = true
+\item 
+const int \mbox{\hyperlink{GPS__ACC__SD_8ino_aa68a30b8c0bc8f4f68c5d09cc42f62c3}{MPU\+\_\+addr}} =0x68
+\item 
+int16\+\_\+t \mbox{\hyperlink{GPS__ACC__SD_8ino_a5d936ba9f3de6b9f8e9413cb2651fcae}{AcX}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{GPS__ACC__SD_8ino_a0ebb79a2b29f9b60b067d360740f8357}{AcY}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{GPS__ACC__SD_8ino_a67e62696174a84c9a558aee6393210f8}{AcZ}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{GPS__ACC__SD_8ino_aa2890b346d14fd4b0a2333589038a885}{Tmp}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{GPS__ACC__SD_8ino_a4a788a00f01d83f611da27b7993fc307}{GyX}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{GPS__ACC__SD_8ino_ace7ec06b48f81c84b9790d910919dcf5}{GyY}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{GPS__ACC__SD_8ino_aa8a2e2d0a172356f247aa83b7fd6350d}{GyZ}}
+\item 
+int \mbox{\hyperlink{GPS__ACC__SD_8ino_a3dfb56fce4a9944b52c4e8287eebed8c}{min\+Val}} =265
+\item 
+int \mbox{\hyperlink{GPS__ACC__SD_8ino_a058fc3d0b450f32fd3a113acd5fa84b9}{max\+Val}} =402
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_af88b946fb90d5f08b5fb740c70e98c10}{x}}
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_ab927965981178aa1fba979a37168db2a}{y}}
+\item 
+double \mbox{\hyperlink{GPS__ACC__SD_8ino_ab3e6ed577a7c669c19de1f9c1b46c872}{z}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_aa089da1c517de68107b17fc34f25fcab}\label{GPS__ACC__SD_8ino_aa089da1c517de68107b17fc34f25fcab}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!angleLoop@{angleLoop}}
+\index{angleLoop@{angleLoop}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{angleLoop()}{angleLoop()}}
+{\footnotesize\ttfamily void angle\+Loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Updates the angle and acceleration TODO\+: where is acceleration updated? 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em x} & the x component of angular acceleration? \\
+\hline
+\mbox{\texttt{ out}}  & {\em y} & the y component of angular acceleration? \\
+\hline
+\mbox{\texttt{ out}}  & {\em z} & the z component of angular acceleration? \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_aa2aef41d8fcb263c3d1034261502d911}\label{GPS__ACC__SD_8ino_aa2aef41d8fcb263c3d1034261502d911}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!dateTime@{dateTime}}
+\index{dateTime@{dateTime}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{dateTime()}{dateTime()}}
+{\footnotesize\ttfamily String date\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns the current time as a String formatted as HH\+:\+MM\+:SS. \begin{DoxyReturn}{Returns}
+The current time as a String formatted as HH\+:\+MM\+:SS 
+\end{DoxyReturn}
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a32f7946ffc898b20669450af82f177d7}\label{GPS__ACC__SD_8ino_a32f7946ffc898b20669450af82f177d7}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!Display@{Display}}
+\index{Display@{Display}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{Display()}{Display()}}
+{\footnotesize\ttfamily Software\+Serial Display (\begin{DoxyParamCaption}\item[{12}]{,  }\item[{13}]{ }\end{DoxyParamCaption})}
+
+Defines the Software\+Serial object Display, and binds it to the digital pins 12 and 13 \mbox{\Hypertarget{GPS__ACC__SD_8ino_a2adbbdfa497c424c55b7d48622331311}\label{GPS__ACC__SD_8ino_a2adbbdfa497c424c55b7d48622331311}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!displayFormatted@{displayFormatted}}
+\index{displayFormatted@{displayFormatted}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{displayFormatted()}{displayFormatted()}}
+{\footnotesize\ttfamily String display\+Formatted (\begin{DoxyParamCaption}\item[{double}]{input }\end{DoxyParamCaption})}
+
+TODO\+: CHANGE \char`\"{}\+INTERPRETS DOUBLES WEIRD\char`\"{} TO AN ACTUAL EXPLANATION Because the display interprets doubles weird, they need to be multiplied by 10 and then sent as a string representation of an integer to be correctly rendered. 
+\begin{DoxyParams}{Parameters}
+{\em input} & the value to be formatted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a String representation of the input double that renders correctly on the Heads Up Display 
+\end{DoxyReturn}
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a2612ee2e01ac372b9847e46834b46800}\label{GPS__ACC__SD_8ino_a2612ee2e01ac372b9847e46834b46800}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!GPS\_loop@{GPS\_loop}}
+\index{GPS\_loop@{GPS\_loop}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{GPS\_loop()}{GPS\_loop()}}
+{\footnotesize\ttfamily void GPS\+\_\+loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Updates the Display with current information from the GPS \mbox{\Hypertarget{GPS__ACC__SD_8ino_aac086e13ab83f79870def3a2d1838fb6}\label{GPS__ACC__SD_8ino_aac086e13ab83f79870def3a2d1838fb6}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!lapEvent@{lapEvent}}
+\index{lapEvent@{lapEvent}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{lapEvent()}{lapEvent()}}
+{\footnotesize\ttfamily void lap\+Event (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Called via interrupt when the lap button is pressed. Sets the value of next\+Lap to true so that functionality can be handled on the next loop of the code. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em next\+Lap} & The boolean that is set to true when this function is called \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_afe461d27b9c48d5921c00d521181f12f}\label{GPS__ACC__SD_8ino_afe461d27b9c48d5921c00d521181f12f}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!loop@{loop}}
+\index{loop@{loop}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default arduino function that runs repeatedly while the arduino is on. \mbox{\Hypertarget{GPS__ACC__SD_8ino_a15cf00a78bfe45e38b23e3120d289521}\label{GPS__ACC__SD_8ino_a15cf00a78bfe45e38b23e3120d289521}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!makeFolder@{makeFolder}}
+\index{makeFolder@{makeFolder}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{makeFolder()}{makeFolder()}}
+{\footnotesize\ttfamily void make\+Folder (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+TODO\+: is this accurate? Makes a unique folder in the SD card storage named MONTH\+\_\+\+DAY/\+HOUR. \mbox{\Hypertarget{GPS__ACC__SD_8ino_a672b86dff195b74fe73753a7dae95801}\label{GPS__ACC__SD_8ino_a672b86dff195b74fe73753a7dae95801}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!normalizeTen@{normalizeTen}}
+\index{normalizeTen@{normalizeTen}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{normalizeTen()}{normalizeTen()}}
+{\footnotesize\ttfamily String normalize\+Ten (\begin{DoxyParamCaption}\item[{int}]{time }\end{DoxyParamCaption})}
+
+Adds a leading zero to the input number if it is less than 10. Used to make the clock values look better. 
+\begin{DoxyParams}{Parameters}
+{\em time} & the time to potentially add a leading zero to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a String representation of the number, including leading zero if needed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a7e1df6ba33b2e1b8824cb92a3ec7ae71}\label{GPS__ACC__SD_8ino_a7e1df6ba33b2e1b8824cb92a3ec7ae71}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!SD\_loop@{SD\_loop}}
+\index{SD\_loop@{SD\_loop}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{SD\_loop()}{SD\_loop()}}
+{\footnotesize\ttfamily void SD\+\_\+loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Makes a log file, and then writes data to it with each loop \mbox{\Hypertarget{GPS__ACC__SD_8ino_accb474d49cd9bf12d0570591b7f8fe2e}\label{GPS__ACC__SD_8ino_accb474d49cd9bf12d0570591b7f8fe2e}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!setDisplayVariable@{setDisplayVariable}}
+\index{setDisplayVariable@{setDisplayVariable}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{setDisplayVariable()}{setDisplayVariable()}}
+{\footnotesize\ttfamily void set\+Display\+Variable (\begin{DoxyParamCaption}\item[{String}]{variable,  }\item[{String}]{type,  }\item[{String}]{new\+Value }\end{DoxyParamCaption})}
+
+Sets a variable on the Heads Up Display to a given value. 
+\begin{DoxyParams}{Parameters}
+{\em variable} & the String name of the variable (set in the Nextion software) to set the value of \\
+\hline
+{\em type} & the data type of the variable being updated, \char`\"{}val\char`\"{} for numbers, \char`\"{}txt\char`\"{} for text \\
+\hline
+{\em new\+Value} & the new value to set the variable to \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a1a79615cebc6a6756b192099ce322656}\label{GPS__ACC__SD_8ino_a1a79615cebc6a6756b192099ce322656}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!setLog@{setLog}}
+\index{setLog@{setLog}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{setLog()}{setLog()}}
+{\footnotesize\ttfamily void set\+Log (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Writes all relevant log data to the data\+String variable in CSV format. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em data\+String} & updated with a relevant log data in CSV format \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a4fc01d736fe50cf5b977f755b675f11d}\label{GPS__ACC__SD_8ino_a4fc01d736fe50cf5b977f755b675f11d}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!setup@{setup}}
+\index{setup@{setup}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default arduino function that runs once when the arduino is first powered/reset. We use this function to start serial connections to the GPS and the Display. TODO\+: and a whole bunch of other stuff... \mbox{\Hypertarget{GPS__ACC__SD_8ino_a1d0f0a78093c02310ff22c3efeeee1d2}\label{GPS__ACC__SD_8ino_a1d0f0a78093c02310ff22c3efeeee1d2}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!Timers@{Timers}}
+\index{Timers@{Timers}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{Timers()}{Timers()}}
+{\footnotesize\ttfamily void Timers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the values of the timer components on the Display. 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a5d936ba9f3de6b9f8e9413cb2651fcae}\label{GPS__ACC__SD_8ino_a5d936ba9f3de6b9f8e9413cb2651fcae}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!AcX@{AcX}}
+\index{AcX@{AcX}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{AcX}{AcX}}
+{\footnotesize\ttfamily int16\+\_\+t AcX}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a0ebb79a2b29f9b60b067d360740f8357}\label{GPS__ACC__SD_8ino_a0ebb79a2b29f9b60b067d360740f8357}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!AcY@{AcY}}
+\index{AcY@{AcY}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{AcY}{AcY}}
+{\footnotesize\ttfamily int16\+\_\+t AcY}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a67e62696174a84c9a558aee6393210f8}\label{GPS__ACC__SD_8ino_a67e62696174a84c9a558aee6393210f8}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!AcZ@{AcZ}}
+\index{AcZ@{AcZ}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{AcZ}{AcZ}}
+{\footnotesize\ttfamily int16\+\_\+t AcZ}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a2b13d276aee0d9fd646c8fa3647e869b}\label{GPS__ACC__SD_8ino_a2b13d276aee0d9fd646c8fa3647e869b}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!altitude@{altitude}}
+\index{altitude@{altitude}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{altitude}{altitude}}
+{\footnotesize\ttfamily double altitude}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a266db0f4dbdfbc06ea34c96f66bebed3}\label{GPS__ACC__SD_8ino_a266db0f4dbdfbc06ea34c96f66bebed3}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!chipSelect@{chipSelect}}
+\index{chipSelect@{chipSelect}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{chipSelect}{chipSelect}}
+{\footnotesize\ttfamily const int chip\+Select = 53}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a52b0acffc0e632327281d0e59938c7b4}\label{GPS__ACC__SD_8ino_a52b0acffc0e632327281d0e59938c7b4}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!currentDistanceBetween@{currentDistanceBetween}}
+\index{currentDistanceBetween@{currentDistanceBetween}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{currentDistanceBetween}{currentDistanceBetween}}
+{\footnotesize\ttfamily double current\+Distance\+Between}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a3988632db9dced8a44ae0810eca7c8ff}\label{GPS__ACC__SD_8ino_a3988632db9dced8a44ae0810eca7c8ff}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!dataString@{dataString}}
+\index{dataString@{dataString}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{dataString}{dataString}}
+{\footnotesize\ttfamily String data\+String}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a79b8e036dca6911e3295a47d99f21f43}\label{GPS__ACC__SD_8ino_a79b8e036dca6911e3295a47d99f21f43}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!distance@{distance}}
+\index{distance@{distance}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{distance}{distance}}
+{\footnotesize\ttfamily double distance}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a3a5f56162810aa1e371620c4c18cc82a}\label{GPS__ACC__SD_8ino_a3a5f56162810aa1e371620c4c18cc82a}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!fileName@{fileName}}
+\index{fileName@{fileName}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{fileName}{fileName}}
+{\footnotesize\ttfamily String file\+Name = \char`\"{}\char`\"{}}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_aeceec268f0865b3184dfb92ece32cb2e}\label{GPS__ACC__SD_8ino_aeceec268f0865b3184dfb92ece32cb2e}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!firstCoords@{firstCoords}}
+\index{firstCoords@{firstCoords}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{firstCoords}{firstCoords}}
+{\footnotesize\ttfamily bool first\+Coords = true}
+
+Used to set previous\+Latitude and previous\+Longitude to the right starting values \mbox{\Hypertarget{GPS__ACC__SD_8ino_a8b3ab54ed3e81c69863d65e4e6c424a0}\label{GPS__ACC__SD_8ino_a8b3ab54ed3e81c69863d65e4e6c424a0}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!flag@{flag}}
+\index{flag@{flag}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{flag}{flag}}
+{\footnotesize\ttfamily bool flag = true}
+
+Used for the creation of the folder \mbox{\Hypertarget{GPS__ACC__SD_8ino_ae66132fd7406f288add449f1655e3e45}\label{GPS__ACC__SD_8ino_ae66132fd7406f288add449f1655e3e45}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!GPS@{GPS}}
+\index{GPS@{GPS}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{GPS}{GPS}}
+{\footnotesize\ttfamily Tiny\+GPSPlus GPS}
+
+Creates the GPS object \mbox{\Hypertarget{GPS__ACC__SD_8ino_a4a788a00f01d83f611da27b7993fc307}\label{GPS__ACC__SD_8ino_a4a788a00f01d83f611da27b7993fc307}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!GyX@{GyX}}
+\index{GyX@{GyX}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{GyX}{GyX}}
+{\footnotesize\ttfamily int16\+\_\+t GyX}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_ace7ec06b48f81c84b9790d910919dcf5}\label{GPS__ACC__SD_8ino_ace7ec06b48f81c84b9790d910919dcf5}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!GyY@{GyY}}
+\index{GyY@{GyY}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{GyY}{GyY}}
+{\footnotesize\ttfamily int16\+\_\+t GyY}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_aa8a2e2d0a172356f247aa83b7fd6350d}\label{GPS__ACC__SD_8ino_aa8a2e2d0a172356f247aa83b7fd6350d}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!GyZ@{GyZ}}
+\index{GyZ@{GyZ}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{GyZ}{GyZ}}
+{\footnotesize\ttfamily int16\+\_\+t GyZ}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_ae024163074f229a06b7ea69b190e466d}\label{GPS__ACC__SD_8ino_ae024163074f229a06b7ea69b190e466d}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!heading@{heading}}
+\index{heading@{heading}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{heading}{heading}}
+{\footnotesize\ttfamily double heading}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a846d1ac47c0cc2369797b454c23b335a}\label{GPS__ACC__SD_8ino_a846d1ac47c0cc2369797b454c23b335a}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!lapCount@{lapCount}}
+\index{lapCount@{lapCount}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{lapCount}{lapCount}}
+{\footnotesize\ttfamily int lap\+Count = 0}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a5429e962e466eab02e0de24e124efd1c}\label{GPS__ACC__SD_8ino_a5429e962e466eab02e0de24e124efd1c}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!lapMinutes@{lapMinutes}}
+\index{lapMinutes@{lapMinutes}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{lapMinutes}{lapMinutes}}
+{\footnotesize\ttfamily int lap\+Minutes}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a788f2a232e0556f89c8cd677963c803d}\label{GPS__ACC__SD_8ino_a788f2a232e0556f89c8cd677963c803d}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!lapPin@{lapPin}}
+\index{lapPin@{lapPin}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{lapPin}{lapPin}}
+{\footnotesize\ttfamily const int lap\+Pin = 2}
+
+The pin indicating if the lap button is being pressed \mbox{\Hypertarget{GPS__ACC__SD_8ino_a557dace973da8d44ba499ef2f7aab32d}\label{GPS__ACC__SD_8ino_a557dace973da8d44ba499ef2f7aab32d}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!lapPoint@{lapPoint}}
+\index{lapPoint@{lapPoint}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{lapPoint}{lapPoint}}
+{\footnotesize\ttfamily unsigned long lap\+Point}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a86b471611c9e06f36cb3e1ed59809b7a}\label{GPS__ACC__SD_8ino_a86b471611c9e06f36cb3e1ed59809b7a}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!lapSeconds@{lapSeconds}}
+\index{lapSeconds@{lapSeconds}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{lapSeconds}{lapSeconds}}
+{\footnotesize\ttfamily int lap\+Seconds}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a2b1012784ed532a1e3584a3b0b00cc75}\label{GPS__ACC__SD_8ino_a2b1012784ed532a1e3584a3b0b00cc75}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!lapTime@{lapTime}}
+\index{lapTime@{lapTime}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{lapTime}{lapTime}}
+{\footnotesize\ttfamily unsigned long lap\+Time}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a76714bdbc5c536fa77dfb14533ff82a9}\label{GPS__ACC__SD_8ino_a76714bdbc5c536fa77dfb14533ff82a9}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!latitude@{latitude}}
+\index{latitude@{latitude}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{latitude}{latitude}}
+{\footnotesize\ttfamily double latitude}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_ac155e35fdeebafc89723a51520fb9fe6}\label{GPS__ACC__SD_8ino_ac155e35fdeebafc89723a51520fb9fe6}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!longitude@{longitude}}
+\index{longitude@{longitude}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{longitude}{longitude}}
+{\footnotesize\ttfamily double longitude}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a058fc3d0b450f32fd3a113acd5fa84b9}\label{GPS__ACC__SD_8ino_a058fc3d0b450f32fd3a113acd5fa84b9}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!maxVal@{maxVal}}
+\index{maxVal@{maxVal}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{maxVal}{maxVal}}
+{\footnotesize\ttfamily int max\+Val =402}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a3dfb56fce4a9944b52c4e8287eebed8c}\label{GPS__ACC__SD_8ino_a3dfb56fce4a9944b52c4e8287eebed8c}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!minVal@{minVal}}
+\index{minVal@{minVal}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{minVal}{minVal}}
+{\footnotesize\ttfamily int min\+Val =265}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a51e3744ca22ee86001a2094dc4fdf697}\label{GPS__ACC__SD_8ino_a51e3744ca22ee86001a2094dc4fdf697}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!mpu@{mpu}}
+\index{mpu@{mpu}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{mpu}{mpu}}
+{\footnotesize\ttfamily Adafruit\+\_\+\+MPU6050 mpu}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_aa68a30b8c0bc8f4f68c5d09cc42f62c3}\label{GPS__ACC__SD_8ino_aa68a30b8c0bc8f4f68c5d09cc42f62c3}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!MPU\_addr@{MPU\_addr}}
+\index{MPU\_addr@{MPU\_addr}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{MPU\_addr}{MPU\_addr}}
+{\footnotesize\ttfamily const int MPU\+\_\+addr =0x68}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a8a15f134e676a4f3a86827f62fffd3c3}\label{GPS__ACC__SD_8ino_a8a15f134e676a4f3a86827f62fffd3c3}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!nextLap@{nextLap}}
+\index{nextLap@{nextLap}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{nextLap}{nextLap}}
+{\footnotesize\ttfamily bool next\+Lap = false}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_ad42797b9aa98fc3b4f0c9379d5058a10}\label{GPS__ACC__SD_8ino_ad42797b9aa98fc3b4f0c9379d5058a10}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!numberOfSatellites@{numberOfSatellites}}
+\index{numberOfSatellites@{numberOfSatellites}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{numberOfSatellites}{numberOfSatellites}}
+{\footnotesize\ttfamily int number\+Of\+Satellites}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_af5cbe348d725709e7d3ada96422e04d8}\label{GPS__ACC__SD_8ino_af5cbe348d725709e7d3ada96422e04d8}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!previousLatitude@{previousLatitude}}
+\index{previousLatitude@{previousLatitude}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{previousLatitude}{previousLatitude}}
+{\footnotesize\ttfamily double previous\+Latitude}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a3c87e8abead8833a75225ffefa9dbfe0}\label{GPS__ACC__SD_8ino_a3c87e8abead8833a75225ffefa9dbfe0}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!previousLongitude@{previousLongitude}}
+\index{previousLongitude@{previousLongitude}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{previousLongitude}{previousLongitude}}
+{\footnotesize\ttfamily double previous\+Longitude}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a628c85623f767d1052f5bee5ad05b87f}\label{GPS__ACC__SD_8ino_a628c85623f767d1052f5bee5ad05b87f}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!prevTime@{prevTime}}
+\index{prevTime@{prevTime}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{prevTime}{prevTime}}
+{\footnotesize\ttfamily unsigned long prev\+Time}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a6dc6e6f3c75c509ce943163afb5dade7}\label{GPS__ACC__SD_8ino_a6dc6e6f3c75c509ce943163afb5dade7}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!speed@{speed}}
+\index{speed@{speed}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{speed}{speed}}
+{\footnotesize\ttfamily double speed}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a6e5adc980324a6e0b9350c96e3da48c2}\label{GPS__ACC__SD_8ino_a6e5adc980324a6e0b9350c96e3da48c2}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!startHour@{startHour}}
+\index{startHour@{startHour}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{startHour}{startHour}}
+{\footnotesize\ttfamily String start\+Hour}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a0e06ecdad9f318fafbb0b28370c3cfef}\label{GPS__ACC__SD_8ino_a0e06ecdad9f318fafbb0b28370c3cfef}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!startTime@{startTime}}
+\index{startTime@{startTime}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{startTime}{startTime}}
+{\footnotesize\ttfamily unsigned long start\+Time}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_aa2890b346d14fd4b0a2333589038a885}\label{GPS__ACC__SD_8ino_aa2890b346d14fd4b0a2333589038a885}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!Tmp@{Tmp}}
+\index{Tmp@{Tmp}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{Tmp}{Tmp}}
+{\footnotesize\ttfamily int16\+\_\+t Tmp}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_ab332187e3f86b9b7e418b7271c03eade}\label{GPS__ACC__SD_8ino_ab332187e3f86b9b7e418b7271c03eade}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!totalMinutes@{totalMinutes}}
+\index{totalMinutes@{totalMinutes}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{totalMinutes}{totalMinutes}}
+{\footnotesize\ttfamily int total\+Minutes}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_a31be2ec7a2d2c8fc93799d578b409b6e}\label{GPS__ACC__SD_8ino_a31be2ec7a2d2c8fc93799d578b409b6e}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!totalSeconds@{totalSeconds}}
+\index{totalSeconds@{totalSeconds}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{totalSeconds}{totalSeconds}}
+{\footnotesize\ttfamily int total\+Seconds}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_aa9bee177659c837ed71df703dd1624f9}\label{GPS__ACC__SD_8ino_aa9bee177659c837ed71df703dd1624f9}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!totalTime@{totalTime}}
+\index{totalTime@{totalTime}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{totalTime}{totalTime}}
+{\footnotesize\ttfamily unsigned long total\+Time}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_af88b946fb90d5f08b5fb740c70e98c10}\label{GPS__ACC__SD_8ino_af88b946fb90d5f08b5fb740c70e98c10}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!x@{x}}
+\index{x@{x}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily double x}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_ab927965981178aa1fba979a37168db2a}\label{GPS__ACC__SD_8ino_ab927965981178aa1fba979a37168db2a}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!y@{y}}
+\index{y@{y}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily double y}
+
+\mbox{\Hypertarget{GPS__ACC__SD_8ino_ab3e6ed577a7c669c19de1f9c1b46c872}\label{GPS__ACC__SD_8ino_ab3e6ed577a7c669c19de1f9c1b46c872}} 
+\index{GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}!z@{z}}
+\index{z@{z}!GPS\_ACC\_SD.ino@{GPS\_ACC\_SD.ino}}
+\doxysubsubsection{\texorpdfstring{z}{z}}
+{\footnotesize\ttfamily double z}
+
