@@ -10,6 +10,7 @@
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Servo.h>  // Include the Servo library
+
 int ECUData[32];
 byte RS232[64];
 int StartIndex;
@@ -20,31 +21,43 @@ int throttleValue;          // Variable to store the potentiometer value
 int prevThrottle = 0;
 // 63488 is ID for red in nextion
 // 65504 is the ID for yellow in nextion
+
 // pin assignments
-const int chipSelect = 53;
+const int chipSelect = 53; //TODO: description
+/** The pin indicating if the lap button is being pressed */
 const int lapPin = 2;
 
-Adafruit_MPU6050 mpu;
-TinyGPSPlus GPS; // creates the gps object
-SoftwareSerial Display (12,13); // sets up the software Serial to digital pins 12 and 13
+Adafruit_MPU6050 mpu; //TODO: description
+/** Creates the GPS object */ //TODO: revisit this description
+TinyGPSPlus GPS;
+/** Defines the SoftwareSerial object Display, and binds it to the digital pins 12 and 13 */
+SoftwareSerial Display (12,13);
+
 // global variables used to store data
+
+// for GPS data
 float hourConversion;
-double lat;
-double lng;
-double prevlat;
-double prevlng;
-int sats;
+double latitude;
+double longitude;
+double previousLatitude;
+double previousLongitude;
+int numberOfSatellites;
 double speed;
-double alt;
+double altitude;
 double heading;
 double distance;
+double currentDistanceBetween;
+
+// for logging
 String dataString;
 String fileName = "";
 String startHour;
-unsigned long Start_Time;
-unsigned long TOTTIME;
-unsigned long LAPTIME;
-int TOTMIN;
+
+//for timers
+unsigned long startTime;
+unsigned long totalTime;
+unsigned long lapTime;
+int totalMinutes;
 int totalAverageCount=0;
 int lapAverageCount = 0;
 double averageSpeed;
@@ -52,18 +65,20 @@ double lapAverageSpeed;
 double lapAverageSpeedNeeded;
 int MAXSECS = 2040;
 int LAPGOAL = 510;
-int TOTSEC;
-int LAPMIN;
-int LAPSEC;
-int lapCount =-1;
+int totalSeconds;
+int lapMinutes;
+int lapSeconds;
+int lapCount = -1;
 unsigned long lapPoint;
 unsigned long prevTime;
 unsigned long ECUTime;
 bool speedWatch = false; // used to see if speed has dropped below the optimal zone
 bool speedCritical = false;// ^
 bool nextLap = false;
-bool first_cords = true; // used to set the prevlng and prevlat to the right starting value
-bool folderFirst = true; // used for the creation of the folder 
+/** Used to set previousLatitude and previousLongitude to the right starting values */
+bool firstCoords = true;
+/** Used for the creation of the folder */
+bool folderFirst = true;
 const int MPU_addr=0x68;
 int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
 int minVal=265;
@@ -71,19 +86,21 @@ int maxVal=402;
 double x;
 double y;
 double z;
-  double RPM;
-  double MAP;
-  double TPS;
-  double ECT;
-  double IAT;
-  double O2S;
-  double SPARK;
-  double FUELPW1;
-  double FUELPW2;
-  double UbAdc;
-  double FuelLvl;
-  double BARO;
-  double FuelComsumption;
+
+double RPM;
+double MAP;
+double TPS;
+double ECT;
+double IAT;
+double O2S;
+double SPARK;
+double FUELPW1;
+double FUELPW2;
+double UbAdc;
+double FuelLvl;
+double BARO;
+double FuelComsumption;
+
 /**
  * Default arduino function that runs once when the arduino is first powered/reset.
  * We use this function to start serial connections to the GPS and the Display
@@ -110,51 +127,46 @@ void setup() {
     // don't do anything more
   }
   Serial.println("card initialized.");
- // while(GPS.location.lat() == 0){ //
-   // Serial.println("Waiting for GPS to connect");  
-    //delay(1000);  
-  //}
-   if (!mpu.begin()) {
+  if (!mpu.begin()) {
     Serial.println("Failed to find MPU6050 chip");
-   }  
+  }  
   Serial.println("GPS connected");
-  Start_Time = millis();
+  startTime = millis();
   lapPoint = millis();  
   pinMode(lapPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(lapPin),lapEvent, RISING);
   mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
   Serial.print("Accelerometer range set to: ");
   switch (mpu.getAccelerometerRange()) {
-  case MPU6050_RANGE_2_G:
-    Serial.println("+-2G");
-    break;
-  case MPU6050_RANGE_4_G:
-    Serial.println("+-4G");
-    break;
-  case MPU6050_RANGE_8_G:
-    Serial.println("+-8G");
-    break;
-  case MPU6050_RANGE_16_G:
-    Serial.println("+-16G");
-    break;
+    case MPU6050_RANGE_2_G:
+      Serial.println("+-2G");
+      break;
+    case MPU6050_RANGE_4_G:
+      Serial.println("+-4G");
+      break;
+    case MPU6050_RANGE_8_G:
+      Serial.println("+-8G");
+      break;
+    case MPU6050_RANGE_16_G:
+      Serial.println("+-16G");
+      break;
   }
   mpu.setGyroRange(MPU6050_RANGE_500_DEG);
   Serial.print("Gyro range set to: ");
   switch (mpu.getGyroRange()) {
-  case MPU6050_RANGE_250_DEG:
-    Serial.println("+- 250 deg/s");
-    break;
-  case MPU6050_RANGE_500_DEG:
-    Serial.println("+- 500 deg/s");
-    break;
-  case MPU6050_RANGE_1000_DEG:
-    Serial.println("+- 1000 deg/s");
-    break;
-  case MPU6050_RANGE_2000_DEG:
-    Serial.println("+- 2000 deg/s");
-    break;
+    case MPU6050_RANGE_250_DEG:
+      Serial.println("+- 250 deg/s");
+      break;
+    case MPU6050_RANGE_500_DEG:
+      Serial.println("+- 500 deg/s");
+      break;
+    case MPU6050_RANGE_1000_DEG:
+      Serial.println("+- 1000 deg/s");
+      break;
+    case MPU6050_RANGE_2000_DEG:
+      Serial.println("+- 2000 deg/s");
+      break;
   }
-
   mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
   Serial.print("Filter bandwidth set to: ");
   switch (mpu.getFilterBandwidth()) {
@@ -180,87 +192,120 @@ void setup() {
     Serial.println("5 Hz");
     break;
   }
- sensors_event_t a, g, temp;
+  sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp);    
 }
-void lapEvent(){
+
+/**
+ * Called via interrupt when the lap button is pressed.
+ * Sets the value of nextLap to true so that functionality can be handled on the next loop of the code.
+ * @param[out] nextLap The boolean that is set to true when this function is called
+ */
+void lapEvent() {
    nextLap = true; 
 }
-void Timers(){  
-  if(nextLap){
-        lapCount++;
-       lapPoint = millis();
- 
 
+/**
+ * Sets the values of the timer components on the Display.
+ */
+void Timers(){  
+  if (nextLap) {
+    lapCount++;
+    lapPoint = millis();
+ 
     if(lapCount==1){
-      Start_Time = millis();
-      LAPTIME =0;          
-    }    
+      startTime = millis();
+      lapTime =0;          
+    }
+
     if(lapCount != 0){
-      MAXSECS -= LAPTIME / 1000;
+      MAXSECS -= lapTime / 1000;
       LAPGOAL = MAXSECS/(4-(lapCount-1));
       hourConversion = (LAPGOAL/60.0)/60.0; 
       lapAverageSpeedNeeded = 2.4 / hourConversion;
-      setDisplayVar("SPDND", displayFormatted(lapAverageSpeedNeeded));      
-      //Start_Time = millis();
-    }      
-      int GOALMIN = ((LAPGOAL/60) % 60);
-      int GOALSEC = (LAPGOAL % 60); 
-    nextLap = false; 
-    Display.print("GOALMIN.txt=\"" +normalizeTen(GOALMIN)+"\""); 
-    updateInfo();
-    Display.print("GOALSEC.txt=\"" +normalizeTen(GOALSEC)+"\""); 
-    updateInfo();  
+      //TOOD: explanation of what SPDND is
+      setDisplayVariable("SPDND", "val", displayFormatted(lapAverageSpeedNeeded));      
+    }
+
+    int GOALMIN = ((LAPGOAL/60) % 60);
+    int GOALSEC = (LAPGOAL % 60); 
+    nextLap = false;
+    setDisplayVariable("GOALMIN", "txt", "\"" + normalizeTen(GOALMIN) + "\"");
+    setDisplayVariable("GOALSEC", "txt", "\"" + normalizeTen(GOALSEC) + "\"");
   } 
+
   lapAverageCount++;
   totalAverageCount++;
-  if(lapAverageCount>1){
+  if (lapAverageCount>1) {
     lapAverageSpeed = (lapAverageSpeed*(lapAverageCount -1)+speed)/lapAverageCount;
-    setDisplayVar("LAPAVG", displayFormatted(lapAverageSpeed));
+    setDisplayVariable("LAPAVG", "val", displayFormatted(lapAverageSpeed));
   }
-  if(totalAverageCount>1){
+  if (totalAverageCount>1) {
     averageSpeed = (averageSpeed*(totalAverageCount -1)+speed)/totalAverageCount;
-    setDisplayVar("AVGSPD", displayFormatted(averageSpeed));
+    setDisplayVariable("AVGSPD", "val", displayFormatted(averageSpeed));
   }
       
-  TOTTIME = millis() - Start_Time;
-  LAPTIME = millis() -lapPoint;    
-  Display.print("TOTMIN.txt=\"" +normalizeTen(((TOTTIME / 1000)/60) % 60)+"\""); 
-  updateInfo();
-  TOTMIN = ((TOTTIME / 1000)/60) % 60;
-  Display.print("TOTSEC.txt=\"" +normalizeTen((TOTTIME/1000) % 60)+ "\""); // sends the distance value
-  updateInfo();
-  TOTSEC = ((TOTTIME/1000) % 60);
-  LAPMIN = ((LAPTIME / 1000)/60) % 60;
-  Display.print("LAPMIN.txt=\"" +normalizeTen(LAPMIN)+"\""); 
-  updateInfo();
-  LAPSEC = ((LAPTIME/1000) % 60);
-  Display.print("LAPSEC.txt=\"" +normalizeTen(LAPSEC)+ "\""); // sends the distance value
-  updateInfo();
+  totalTime = millis() - startTime;
+  lapTime = totalTime - lapPoint;
+
+  totalMinutes = ((totalTime / 1000) / 60) % 60;
+  totalSeconds = ((totalTime / 1000) % 60);
+
+  setDisplayVariable("TOTMIN", "txt", "\"" + normalizeTen(totalMinutes) + "\"");
+  setDisplayVariable("TOTSEC", "txt", "\"" + normalizeTen(totalSeconds) + "\"");
+
+  lapMinutes = ((lapTime / 1000) / 60) % 60;
+  lapSeconds = ((lapTime / 1000) % 60);
+
+  setDisplayVariable("LAPMIN", "txt", "\"" + normalizeTen(lapMinutes) + "\"");
+  setDisplayVariable("LAPSET", "txt", "\"" + normalizeTen(lapSeconds) + "\"");
 }
+
+/**
+ * TODO: is this accurate?
+ * Makes a unique folder in the SD card storage named MONTH_DAY/HOUR.
+ */
 void makeFolder(){ // makes the folder using the month and date
   Serial.println(GPS.date.month()); 
   fileName.concat(String(GPS.date.month()));
   fileName.concat("_");
   fileName.concat(String(GPS.date.day()));
   SD.mkdir(fileName);
+  //TODO: I don't understand what is happening here
   fileName.concat("/");
-  fileName.concat(GPS.time.hour());
-      
+  fileName.concat(GPS.time.hour()); 
 }
-String dateTime(){
+
+/**
+ * Returns the current time as a String formatted as HH:MM:SS.
+ * @return The current time as a String formatted as HH:MM:SS
+ */
+String dateTime() { //TODO: rename this since it doesn't give the date?
   return String(GPS.time.hour()) + ":"+ String(GPS.time.minute())+ ":"+ String(GPS.time.second()); 
 }
+
+/**
+ * Writes all relevant log data to the dataString variable in CSV format.
+ * @param[out] dataString updated with a relevant log data in CSV format
+ */
 void setLog(){
-   sensors_event_t a, g, temp;
+  sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp); 
-  dataString = (normalizeTen(TOTMIN)+":"+ normalizeTen(TOTSEC) +","+normalizeTen(LAPMIN)+":"+
-   normalizeTen(LAPSEC) +","+ String(lapCount+1)+","+ String(lng) +","+
-   String(lat) +","+ String(speed) +","+ String(distance) +","+ String(alt) + ","+ String(a.acceleration.x)+ "," +String(a.acceleration.y)+","+
-   String(a.acceleration.z)+ ","+ String(x)+ "," + String(y) + "," + String(z)+ "," + String(g.gyro.roll) + ","+
-   g.gyro.pitch+ "," + g.gyro.heading +","+String(temp.temperature)+","+ String(RPM) +","+ String(MAP) +","+ String(TPS) +","+ String(ECT) + ","+ String(IAT)+ "," +String(O2S)+","+
-    String(SPARK) +","+ String(FUELPW1) +","+ String(FUELPW2) +","+ String(UbAdc) + ","+ String(BARO)+ "," +String(FuelComsumption));  
+  dataString = (normalizeTen(totalMinutes)+":"+ normalizeTen(totalSeconds) +","+normalizeTen(lapMinutes)+":"+
+  normalizeTen(lapSeconds) +","+ String(lapCount)+","+ String(latitude) +","+
+  String(longitude) +","+ String(speed) +","+ String(distance) +","+
+  String(altitude) + ","+ String(a.acceleration.x)+ "," +String(a.acceleration.y)+","+
+  String(a.acceleration.z)+ ","+ String(x)+ "," + String(y) + "," +
+  String(z)+ "," + String(g.gyro.roll) + ","+ g.gyro.pitch + "," +
+  g.gyro.heading +","+String(temp.temperature)+","+ String(RPM) +","+
+  String(MAP) +","+ String(TPS) +","+ String(ECT) + ","+ String(IAT)+ ","+
+  String(O2S)+","+String(SPARK) +","+ String(FUELPW1) +","+ String(FUELPW2) +","+
+  String(UbAdc) + ","+ String(BARO)+ "," +String(FuelComsumption));  
 }
+
+/**
+ * Makes a log file, and then writes data to it with each loop
+ */
 void SD_loop(){    
   if(folderFirst){ // first run protocal
     makeFolder();
@@ -272,10 +317,11 @@ void SD_loop(){
     fileName.concat(".txt"); //saves as a txt file that can be imported into excell       
     folderFirst = false;
     File logFile = SD.open(fileName, FILE_WRITE);
-    logFile.println("TOTTIME,LAPTIME,Lap,Logitude,Latitude,Speed,Distance,Altitude,AcX,AcY,AcZ,TiltX,TiltY,TiltZ,GryoX,GyroY,GyroZ,Temp,RPM,MAP,TPS,ECT,IAT,O2S,SPARK,FUELPW1,FUELPW2,UbAdc,FUELLvl,BARO,Fuel_Consumption"); // header of the file 
+    logFile.println("TotalTime,LapTime,Lap,Logitude,Latitude,Speed,Distance,Altitude,AcX,AcY,AcZ,TiltX,TiltY,TiltZ,GryoX,GyroY,GyroZ,Temp,RPM,MAP,TPS,ECT,IAT,O2S,SPARK,FUELPW1,FUELPW2,UbAdc,FUELLvl,BARO,Fuel_Consumption"); // header of the file 
     logFile.close();      
   }
-  File logFile = SD.open(fileName, FILE_WRITE); // creates the file 
+  File logFile = SD.open(fileName, FILE_WRITE); // creates the file
+
   // if the file is available, write to it:
   if (logFile) { 
     setLog();    
@@ -289,67 +335,92 @@ void SD_loop(){
     Serial.println("error opening the file");
   }  
 }
+
+/**
+ * Updates the Display with current information from the GPS
+ */
 void GPS_loop() {
-  // put your main code here, to run repeatedly:
-    if(Serial2.available()>0){ // if the GPS data is availibe
-      GPS.encode(Serial2.read()); // sends the NHEMA setance to be parsed
-      if(GPS.location.isValid()){ // checks if the gps data is valid
-        if(GPS.location.isUpdated()){ // if the data has been updated
-          if(first_cords){ // first time protocal
-            first_cords = false; // coverts it to false
-            prevlat = GPS.location.lat(); // sets the prev lat and long to correct values
-            prevlng = GPS.location.lng();
-          }
-          lat = GPS.location.lat(); // sets the variables that are wanted
-          lng = GPS.location.lng();
-          alt = GPS.altitude.feet();
-          speed = GPS.speed.mph();
-          sats = GPS.satellites.value();
-          heading = GPS.course.deg();
-          if(GPS.distanceBetween(prevlat,prevlng,lat,lng)>3) { // if the distance is above around 9ft
-             distance += (GPS.distanceBetween(prevlat,prevlng,lat,lng)/1610.0); // converts the meters to miles
-              prevlng = lng; // updates the prev values
-              prevlat = lat;
-          }
-          
-          if(speed>=29 || speed <= 5){// if within 5 mph of the borders for the run then the speed will change to a yellow colour
-              if(!speedCritical){
-                Display.print("SPEED.pco=63488"); 
-                updateInfo();
-                speedWatch = false;
-                speedCritical = true;
-              }
-            
-          }else if(speed <= 10||speed >= 25){ // if less than or equal to the end points then the speed will change to a red colour
-              if(!speedWatch){
-                Display.print("SPEED.pco=65504");
-                updateInfo();
-                speedWatch = true;
-                speedCritical = false;                
-              }
-          }else{ // if neither of the conditions above are met check to see if the speed should be changed back to the default green colour
-              if(speedWatch){
-                Display.print("SPEED.pco=1024");
-                updateInfo();
-                speedWatch = false;                              
-              }
-          }
-                                       
-            setDisplayVar("SPEED", displayFormatted(speed));
-          //speed = (int)(speed*10); // the display interprets doubles werid they need to be multipled by 10
-          //convert = (String) (int)speed; // converts it to a sting for the concatonation
-          //Display.print("Speed.val=" + convert); // sends speed value
+  //check everything is good with the GPS before trying to run the main loop code
+  //if any of these checks fail the loop returns before the rest of the code can be run
+
+  //check if the GPS is available by checking if there is data in the buffer
+  if (Serial2.available() < 0) {
+    Serial.print("GPS unavailable\n");
+    return;
+  }
+
+  //sends the NHEMA sentence to be parsed
+  GPS.encode(Serial2.read());
+
+  //checks if the GPS location is valid
+  if (not GPS.location.isValid()) {
+    Serial.print("GPS Bad Location\n");
+    return;
+  }
+
+  //checks if the GPS data has been updated
+  if (not GPS.location.isUpdated()) {
+    Serial.print("GPS Location not updated\n");
+    return;
+  }
+
+  //first time protocol
+  if (firstCoords) {
+    firstCoords = false; //sets this flag so that this code is skipped for the rest of the code's runtime
+    // sets prevLatitude and prevLongitude to correct values
+    previousLatitude = GPS.location.lat();
+    previousLongitude = GPS.location.lng();
+  }
+
+  //set the GPS variables
+  latitude = GPS.location.lat();
+  longitude = GPS.location.lng();
+  altitude = GPS.altitude.feet(); //the GPS altitude in feet
+  speed = GPS.speed.mph();
+  numberOfSatellites = GPS.satellites.value();
+  heading = GPS.course.deg();
 
 
-          setDisplayVar("DISTANCE", displayFormatted(distance));
-          //dis_convert = (int) (distance * 10); // converts the value to an int
-          //convert = (String) dis_convert;
-          //Display.print("Distance.val=" + convert); // sends the distance value
-        }        
-      }
+  //TODO: COMMENT THIS
+  currentDistanceBetween = GPS.distanceBetween(previousLatitude, previousLongitude,latitude, longitude);
+  if (currentDistanceBetween > 3) { // if the distance is above around 9ft
+    distance += currentDistanceBetween / 1610.0; // converts the meters to miles
+    setDisplayVariable("DISTANCE", "val", displayFormatted(distance));
+    previousLongitude = longitude; // updates the prev values
+    previousLatitude = latitude;
+  }
+  
+  if (speed>=29 || speed <= 5) {// if within 5 mph of the borders for the run then the speed will change to a yellow colour
+    if(!speedCritical){
+      setDisplayVariable("SPEED", "pco", "63488");
+      speedWatch = false;
+      speedCritical = true;
     }
   }
-void angle_Loop(){ // loop for the angle and acceleration  
+  else if (speed <= 10||speed >= 25) { // if less than or equal to the end points then the speed will change to a red colour
+    if(!speedWatch){
+      setDisplayVariable("SPEED", "pco", "65504");
+      speedWatch = true;
+      speedCritical = false;                
+    }
+  }
+  else{ // if neither of the conditions above are met check to see if the speed should be changed back to the default green colour
+    if(speedWatch){
+      setDisplayVariable("SPEED", "pco", "1024");
+      speedWatch = false;                              
+    }
+  }
+                                
+  setDisplayVariable("SPEED", "val", displayFormatted(speed));
+}
+
+/**
+ * Updates the angle and acceleration TODO: where is acceleration updated?
+ * @param[out] x the x component of angular acceleration?
+ * @param[out] y the y component of angular acceleration?
+ * @param[out] z the z component of angular acceleration?
+ */
+void angleLoop() { // loop for the angle and acceleration
   Wire.beginTransmission(MPU_addr);
   Wire.write(0x3B);
   Wire.endTransmission(false);
@@ -361,27 +432,42 @@ void angle_Loop(){ // loop for the angle and acceleration
   int yAng = map(AcY,minVal,maxVal,-90,90);
   int zAng = map(AcZ,minVal,maxVal,-90,90);
  
-  x= RAD_TO_DEG * (atan2(-yAng, -zAng)+PI);
-  y= RAD_TO_DEG * (atan2(-xAng, -zAng)+PI);
-  z= RAD_TO_DEG * (atan2(-yAng, -xAng)+PI);
+  x = RAD_TO_DEG * (atan2(-yAng, -zAng)+PI);
+  y = RAD_TO_DEG * (atan2(-xAng, -zAng)+PI);
+  z = RAD_TO_DEG * (atan2(-yAng, -xAng)+PI);
 }
+
+/** TODO: CHANGE "INTERPRETS DOUBLES WEIRD" TO AN ACTUAL EXPLANATION
+ * Because the display interprets doubles weird, they need to be multiplied by 10
+ * and then sent as a string representation of an integer to be correctly rendered.
+ * @param input the value to be formatted
+ * @return a String representation of the input double that renders correctly on the Heads Up Display
+ */
 String displayFormatted(double input) {
-  // the display interprets doubles werid they need to be multipled by 10
+  // the display interprets doubles weird they need to be multiplied by 10
   return (String) (int) (input * 10);
 }
-void setDisplayVar(String variable, String newValue) { 
-  Display.print(variable + ".val=" + newValue);
-  updateInfo();
-}
-void updateInfo() {
-  Display.write(0xff); // tells the display to update info
+
+/**
+ * Sets a variable on the Heads Up Display to a given value.
+ * @param variable the String name of the variable (set in the Nextion software) to set the value of
+ * @param type the data type of the variable being updated, "val" for numbers, "txt" for text, "pco" for color
+ * @param newValue the new value to set the variable to
+ */
+void setDisplayVariable(String variable, String type, String newValue) {
+  //send the updated value to the display
+  Display.print(variable + "." + type + "=" + newValue);
+  //tells the display to update info (not completely sure how...)
   Display.write(0xff);
   Display.write(0xff);
+  Display.write(0xff);
 }
+
 String normalizeTen(int time) { // used for clock values just for looks
     return time < 10 ? ("0" + String(time)) : (String(time));
 }
-   bool ECU(){
+
+bool ECU() {
 	bool check = false;
 	if(Serial3.available() > 0)
 	{
@@ -395,7 +481,8 @@ String normalizeTen(int time) { // used for clock values just for looks
 				return false;
 			}
 		}
-		
+
+    //might overflow 256?
 		byte checksum = 0x80 + 0x8f;
 		RS232 = Serial3.read();
 		if(RS232 == 0x8f){
@@ -423,10 +510,11 @@ String normalizeTen(int time) { // used for clock values just for looks
 		}
 	}
 	return check;
-}        
+}     
+
 void loop(){
   GPS_loop();
-  angle_Loop();
+  angleLoop();
   if(millis()-prevTime>1000){ // only writes to the SD every second
       SD_loop();       
       Timers(); // timers function needs to be here because the millis() funtion uses interupts which messes with the way Serial communication works    
@@ -438,4 +526,3 @@ void loop(){
     ECUTime = millis();      
   } 
 }
-
