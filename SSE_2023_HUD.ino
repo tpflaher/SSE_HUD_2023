@@ -53,21 +53,13 @@ String dataString;
 String fileName = "";
 String startHour;
 
+
 //for timers
 unsigned long startTime;
 unsigned long totalTime;
 unsigned long lapTime;
-int totalMinutes;
 int totalAverageCount=0;
 int lapAverageCount = 0;
-double averageSpeed;
-double lapAverageSpeed;
-double lapAverageSpeedNeeded;
-int MAXSECS = 2040;
-int LAPGOAL = 510;
-int totalSeconds;
-int lapMinutes;
-int lapSeconds;
 int lapCount = -1;
 unsigned long lapPoint;
 unsigned long prevTime;
@@ -75,6 +67,21 @@ unsigned long ECUTime;
 bool speedWatch = false; // used to see if speed has dropped below the optimal zone
 bool speedCritical = false;// ^
 bool nextLap = false;
+
+
+//timer vars sent to the hud
+int MAXSECS = 2040;
+int LAPGOAL = 510;
+int TOTMIN;
+int TOTSEC;
+double LAPAVG; //the lap average speed
+double AVGSPD;
+int LAPMIN;
+int LAPSEC;
+double SPDND; //the lap average speed needed
+
+
+
 /** Used to set previousLatitude and previousLongitude to the right starting values */
 bool firstCoords = true;
 /** Used for the creation of the folder */
@@ -135,63 +142,16 @@ void setup() {
   lapPoint = millis();  
   pinMode(lapPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(lapPin),lapEvent, RISING);
+
+  //sets accelerometer range to 8 G
   mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
-  Serial.print("Accelerometer range set to: ");
-  switch (mpu.getAccelerometerRange()) {
-    case MPU6050_RANGE_2_G:
-      Serial.println("+-2G");
-      break;
-    case MPU6050_RANGE_4_G:
-      Serial.println("+-4G");
-      break;
-    case MPU6050_RANGE_8_G:
-      Serial.println("+-8G");
-      break;
-    case MPU6050_RANGE_16_G:
-      Serial.println("+-16G");
-      break;
-  }
+
+  //sets gyro range to 500 deg
   mpu.setGyroRange(MPU6050_RANGE_500_DEG);
-  Serial.print("Gyro range set to: ");
-  switch (mpu.getGyroRange()) {
-    case MPU6050_RANGE_250_DEG:
-      Serial.println("+- 250 deg/s");
-      break;
-    case MPU6050_RANGE_500_DEG:
-      Serial.println("+- 500 deg/s");
-      break;
-    case MPU6050_RANGE_1000_DEG:
-      Serial.println("+- 1000 deg/s");
-      break;
-    case MPU6050_RANGE_2000_DEG:
-      Serial.println("+- 2000 deg/s");
-      break;
-  }
+
+  //sets filter bandwidth to 21 hz
   mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
-  Serial.print("Filter bandwidth set to: ");
-  switch (mpu.getFilterBandwidth()) {
-  case MPU6050_BAND_260_HZ:
-    Serial.println("260 Hz");
-    break;
-  case MPU6050_BAND_184_HZ:
-    Serial.println("184 Hz");
-    break;
-  case MPU6050_BAND_94_HZ:
-    Serial.println("94 Hz");
-    break;
-  case MPU6050_BAND_44_HZ:
-    Serial.println("44 Hz");
-    break;
-  case MPU6050_BAND_21_HZ:
-    Serial.println("21 Hz");
-    break;
-  case MPU6050_BAND_10_HZ:
-    Serial.println("10 Hz");
-    break;
-  case MPU6050_BAND_5_HZ:
-    Serial.println("5 Hz");
-    break;
-  }
+
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp);    
 }
@@ -221,10 +181,11 @@ void Timers(){
     if(lapCount != 0){
       MAXSECS -= lapTime / 1000;
       LAPGOAL = MAXSECS/(4-(lapCount-1));
-      hourConversion = (LAPGOAL/60.0)/60.0; 
-      lapAverageSpeedNeeded = 2.4 / hourConversion;
-      //TOOD: explanation of what SPDND is
-      setDisplayVariable("SPDND", "val", displayFormatted(lapAverageSpeedNeeded));      
+      hourConversion = (LAPGOAL/60.0)/60.0;
+
+      //SPDND is the lap average speed needed
+      SPDND = 2.4 / hourConversion;
+      setDisplayVariable("SPDND", "val", displayFormatted(SPDND));      
     }
 
     int GOALMIN = ((LAPGOAL/60) % 60);
@@ -237,28 +198,28 @@ void Timers(){
   lapAverageCount++;
   totalAverageCount++;
   if (lapAverageCount>1) {
-    lapAverageSpeed = (lapAverageSpeed*(lapAverageCount -1)+speed)/lapAverageCount;
-    setDisplayVariable("LAPAVG", "val", displayFormatted(lapAverageSpeed));
+    LAPAVG = (LAPAVG*(lapAverageCount -1)+speed)/lapAverageCount;
+    setDisplayVariable("LAPAVG", "val", displayFormatted(LAPAVG));
   }
   if (totalAverageCount>1) {
-    averageSpeed = (averageSpeed*(totalAverageCount -1)+speed)/totalAverageCount;
-    setDisplayVariable("AVGSPD", "val", displayFormatted(averageSpeed));
+    AVGSPD = (AVGSPD*(totalAverageCount -1)+speed)/totalAverageCount;
+    setDisplayVariable("AVGSPD", "val", displayFormatted(AVGSPD));
   }
       
   totalTime = millis() - startTime;
   lapTime = totalTime - lapPoint;
 
-  totalMinutes = ((totalTime / 1000) / 60) % 60;
-  totalSeconds = ((totalTime / 1000) % 60);
+  TOTMIN = ((totalTime / 1000) / 60) % 60;
+  TOTSEC = ((totalTime / 1000) % 60);
 
-  setDisplayVariable("TOTMIN", "txt", "\"" + normalizeTen(totalMinutes) + "\"");
-  setDisplayVariable("TOTSEC", "txt", "\"" + normalizeTen(totalSeconds) + "\"");
+  setDisplayVariable("TOTMIN", "txt", "\"" + normalizeTen(TOTMIN) + "\"");
+  setDisplayVariable("TOTSEC", "txt", "\"" + normalizeTen(TOTSEC) + "\"");
 
-  lapMinutes = ((lapTime / 1000) / 60) % 60;
-  lapSeconds = ((lapTime / 1000) % 60);
+  LAPMIN = ((lapTime / 1000) / 60) % 60;
+  LAPSEC = ((lapTime / 1000) % 60);
 
-  setDisplayVariable("LAPMIN", "txt", "\"" + normalizeTen(lapMinutes) + "\"");
-  setDisplayVariable("LAPSET", "txt", "\"" + normalizeTen(lapSeconds) + "\"");
+  setDisplayVariable("LAPMIN", "txt", "\"" + normalizeTen(LAPMIN) + "\"");
+  setDisplayVariable("LAPSET", "txt", "\"" + normalizeTen(LAPSEC) + "\""); //TODO: is LAPSEC misspelled as LAPSET?
 }
 
 /**
@@ -291,8 +252,8 @@ String dateTime() { //TODO: rename this since it doesn't give the date?
 void setLog(){
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp); 
-  dataString = (normalizeTen(totalMinutes)+":"+ normalizeTen(totalSeconds) +","+normalizeTen(lapMinutes)+":"+
-  normalizeTen(lapSeconds) +","+ String(lapCount)+","+ String(latitude) +","+
+  dataString = (normalizeTen(TOTMIN)+":"+ normalizeTen(TOTSEC) +","+normalizeTen(LAPMIN)+":"+
+  normalizeTen(LAPSEC) +","+ String(lapCount)+","+ String(latitude) +","+
   String(longitude) +","+ String(speed) +","+ String(distance) +","+
   String(altitude) + ","+ String(a.acceleration.x)+ "," +String(a.acceleration.y)+","+
   String(a.acceleration.z)+ ","+ String(x)+ "," + String(y) + "," +
