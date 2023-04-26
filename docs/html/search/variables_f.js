@@ -1,4 +1,12 @@
 var searchData=
 [
-  ['x_0',['x',['../GPS__ACC__SD_8ino.html#af88b946fb90d5f08b5fb740c70e98c10',1,'x():&#160;GPS_ACC_SD.ino'],['../GPS__With__Logging__V2_8ino.html#af88b946fb90d5f08b5fb740c70e98c10',1,'x():&#160;GPS_With_Logging_V2.ino']]]
+  ['satellites_0',['satellites',['../GPS__With__Logging__V2_8ino.html#a691915f3fb4792e167a2351c6e932483',1,'satellites():&#160;GPS_With_Logging_V2.ino'],['../GPS__With__Logging__V2_07backup_08_8ino.html#a691915f3fb4792e167a2351c6e932483',1,'satellites():&#160;GPS_With_Logging_V2(backup).ino']]],
+  ['spark_1',['SPARK',['../SSE__2023__HUD_8ino.html#a3d9b43adebce0c0d2e3232e0b76c4b28',1,'SSE_2023_HUD.ino']]],
+  ['spdnd_2',['SPDND',['../SSE__2023__HUD_8ino.html#a4f3d677a88effb8a5d1b171734083faf',1,'SSE_2023_HUD.ino']]],
+  ['speed_3',['speed',['../GPS__ACC__SD_8ino.html#a6dc6e6f3c75c509ce943163afb5dade7',1,'speed():&#160;GPS_ACC_SD.ino'],['../GPS__Code__SSE_8ino.html#a6dc6e6f3c75c509ce943163afb5dade7',1,'speed():&#160;GPS_Code_SSE.ino'],['../GPS__With__Logging__V2_07backup_08_8ino.html#a6dc6e6f3c75c509ce943163afb5dade7',1,'speed():&#160;GPS_With_Logging_V2(backup).ino'],['../GPS__With__Logging__V2_8ino.html#a6dc6e6f3c75c509ce943163afb5dade7',1,'speed():&#160;GPS_With_Logging_V2.ino'],['../SSE__2023__HUD_8ino.html#a6dc6e6f3c75c509ce943163afb5dade7',1,'speed():&#160;SSE_2023_HUD.ino']]],
+  ['speedcritical_4',['speedCritical',['../SSE__2023__HUD_8ino.html#a9b20c1ac3c7ee583dabd7c5c412f2bfe',1,'SSE_2023_HUD.ino']]],
+  ['speedwatch_5',['speedWatch',['../SSE__2023__HUD_8ino.html#a5a406eda379ebba0049508fe9dcfefa0',1,'SSE_2023_HUD.ino']]],
+  ['starthour_6',['startHour',['../GPS__ACC__SD_8ino.html#a6e5adc980324a6e0b9350c96e3da48c2',1,'startHour():&#160;GPS_ACC_SD.ino'],['../GPS__With__Logging__V2_07backup_08_8ino.html#a6e5adc980324a6e0b9350c96e3da48c2',1,'startHour():&#160;GPS_With_Logging_V2(backup).ino'],['../GPS__With__Logging__V2_8ino.html#a6e5adc980324a6e0b9350c96e3da48c2',1,'startHour():&#160;GPS_With_Logging_V2.ino'],['../SSE__2023__HUD_8ino.html#a6e5adc980324a6e0b9350c96e3da48c2',1,'startHour():&#160;SSE_2023_HUD.ino']]],
+  ['startindex_7',['StartIndex',['../SSE__2023__HUD_8ino.html#ae57849e7469c084b2cfa7bf5e32da392',1,'SSE_2023_HUD.ino']]],
+  ['starttime_8',['startTime',['../GPS__ACC__SD_8ino.html#a0e06ecdad9f318fafbb0b28370c3cfef',1,'startTime():&#160;GPS_ACC_SD.ino'],['../GPS__With__Logging__V2_07backup_08_8ino.html#a0e06ecdad9f318fafbb0b28370c3cfef',1,'startTime():&#160;GPS_With_Logging_V2(backup).ino'],['../GPS__With__Logging__V2_8ino.html#a0e06ecdad9f318fafbb0b28370c3cfef',1,'startTime():&#160;GPS_With_Logging_V2.ino'],['../SSE__2023__HUD_8ino.html#a0e06ecdad9f318fafbb0b28370c3cfef',1,'startTime():&#160;SSE_2023_HUD.ino']]]
 ];

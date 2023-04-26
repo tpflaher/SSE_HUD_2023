@@ -1,0 +1,784 @@
+\hypertarget{SSE__2023__HUD_8ino}{}\doxysection{SSE\+\_\+2023\+\_\+\+HUD.\+ino File Reference}
+\label{SSE__2023__HUD_8ino}\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+{\ttfamily \#include $<$Wire.\+h$>$}\newline
+{\ttfamily \#include $<$Tiny\+GPS++.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$Software\+Serial.\+h$>$}\newline
+{\ttfamily \#include $<$SD.\+h$>$}\newline
+{\ttfamily \#include $<$SPI.\+h$>$}\newline
+{\ttfamily \#include $<$Adafruit\+\_\+\+MPU6050.\+h$>$}\newline
+{\ttfamily \#include $<$Adafruit\+\_\+\+Sensor.\+h$>$}\newline
+{\ttfamily \#include $<$Servo.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Software\+Serial \mbox{\hyperlink{SSE__2023__HUD_8ino_a32f7946ffc898b20669450af82f177d7}{Display}} (12, 13)
+\item 
+void \mbox{\hyperlink{SSE__2023__HUD_8ino_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\item 
+void \mbox{\hyperlink{SSE__2023__HUD_8ino_aac086e13ab83f79870def3a2d1838fb6}{lap\+Event}} ()
+\item 
+void \mbox{\hyperlink{SSE__2023__HUD_8ino_a1d0f0a78093c02310ff22c3efeeee1d2}{Timers}} ()
+\item 
+void \mbox{\hyperlink{SSE__2023__HUD_8ino_a15cf00a78bfe45e38b23e3120d289521}{make\+Folder}} ()
+\item 
+String \mbox{\hyperlink{SSE__2023__HUD_8ino_aa2aef41d8fcb263c3d1034261502d911}{date\+Time}} ()
+\item 
+void \mbox{\hyperlink{SSE__2023__HUD_8ino_a1a79615cebc6a6756b192099ce322656}{set\+Log}} ()
+\item 
+void \mbox{\hyperlink{SSE__2023__HUD_8ino_a7e1df6ba33b2e1b8824cb92a3ec7ae71}{SD\+\_\+loop}} ()
+\item 
+void \mbox{\hyperlink{SSE__2023__HUD_8ino_a2612ee2e01ac372b9847e46834b46800}{GPS\+\_\+loop}} ()
+\item 
+void \mbox{\hyperlink{SSE__2023__HUD_8ino_aa089da1c517de68107b17fc34f25fcab}{angle\+Loop}} ()
+\item 
+String \mbox{\hyperlink{SSE__2023__HUD_8ino_a2adbbdfa497c424c55b7d48622331311}{display\+Formatted}} (double input)
+\item 
+void \mbox{\hyperlink{SSE__2023__HUD_8ino_accb474d49cd9bf12d0570591b7f8fe2e}{set\+Display\+Variable}} (String variable, String type, String new\+Value)
+\item 
+String \mbox{\hyperlink{SSE__2023__HUD_8ino_a672b86dff195b74fe73753a7dae95801}{normalize\+Ten}} (int time)
+\item 
+bool \mbox{\hyperlink{SSE__2023__HUD_8ino_a593a7e912678f620f51509150870122b}{ECU}} ()
+\item 
+void \mbox{\hyperlink{SSE__2023__HUD_8ino_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_aa53ff32b6fdb0f89beeac05a6282768e}{ECUData}} \mbox{[}32\mbox{]}
+\item 
+byte \mbox{\hyperlink{SSE__2023__HUD_8ino_adec02fb1cd3d5a13e7cec308b70298f9}{RS232}} \mbox{[}64\mbox{]}
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_ae57849e7469c084b2cfa7bf5e32da392}{Start\+Index}}
+\item 
+bool \mbox{\hyperlink{SSE__2023__HUD_8ino_ac9ec61e2f5be08b4bc57a83e0416ac91}{RSchecker}} = true
+\item 
+Servo \mbox{\hyperlink{SSE__2023__HUD_8ino_a0c8193333055a6fe4b6cf1fba0fe95ca}{throttle}}
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_a5d749c756efaaca7675b43a418c6d100}{trigger}} = A0
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_aa39247ea611c791f220ffcf1240a8405}{throttle\+Value}}
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_aba6355da33350594e71dc5f4cf59e47c}{prev\+Throttle}} = 0
+\item 
+const int \mbox{\hyperlink{SSE__2023__HUD_8ino_a266db0f4dbdfbc06ea34c96f66bebed3}{chip\+Select}} = 53
+\item 
+const int \mbox{\hyperlink{SSE__2023__HUD_8ino_a788f2a232e0556f89c8cd677963c803d}{lap\+Pin}} = 2
+\item 
+Adafruit\+\_\+\+MPU6050 \mbox{\hyperlink{SSE__2023__HUD_8ino_a51e3744ca22ee86001a2094dc4fdf697}{mpu}}
+\item 
+Tiny\+GPSPlus \mbox{\hyperlink{SSE__2023__HUD_8ino_ae66132fd7406f288add449f1655e3e45}{GPS}}
+\item 
+float \mbox{\hyperlink{SSE__2023__HUD_8ino_aa9dfa29aeb0d708ceee8ae61d649d18b}{hour\+Conversion}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a76714bdbc5c536fa77dfb14533ff82a9}{latitude}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_ac155e35fdeebafc89723a51520fb9fe6}{longitude}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_af5cbe348d725709e7d3ada96422e04d8}{previous\+Latitude}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a3c87e8abead8833a75225ffefa9dbfe0}{previous\+Longitude}}
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_ad42797b9aa98fc3b4f0c9379d5058a10}{number\+Of\+Satellites}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a6dc6e6f3c75c509ce943163afb5dade7}{speed}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a2b13d276aee0d9fd646c8fa3647e869b}{altitude}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_ae024163074f229a06b7ea69b190e466d}{heading}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a79b8e036dca6911e3295a47d99f21f43}{distance}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a52b0acffc0e632327281d0e59938c7b4}{current\+Distance\+Between}}
+\item 
+String \mbox{\hyperlink{SSE__2023__HUD_8ino_a3988632db9dced8a44ae0810eca7c8ff}{data\+String}}
+\item 
+String \mbox{\hyperlink{SSE__2023__HUD_8ino_a3a5f56162810aa1e371620c4c18cc82a}{file\+Name}} = \char`\"{}\char`\"{}
+\item 
+String \mbox{\hyperlink{SSE__2023__HUD_8ino_a6e5adc980324a6e0b9350c96e3da48c2}{start\+Hour}}
+\item 
+unsigned long \mbox{\hyperlink{SSE__2023__HUD_8ino_a0e06ecdad9f318fafbb0b28370c3cfef}{start\+Time}}
+\item 
+unsigned long \mbox{\hyperlink{SSE__2023__HUD_8ino_aa9bee177659c837ed71df703dd1624f9}{total\+Time}}
+\item 
+unsigned long \mbox{\hyperlink{SSE__2023__HUD_8ino_a2b1012784ed532a1e3584a3b0b00cc75}{lap\+Time}}
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_ab277f1f4185ca81240006acc8a800571}{total\+Average\+Count}} =0
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_a6c5f6b3cbd7a2b9b008eb1a9abda362c}{lap\+Average\+Count}} = 0
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_a846d1ac47c0cc2369797b454c23b335a}{lap\+Count}} = -\/1
+\item 
+unsigned long \mbox{\hyperlink{SSE__2023__HUD_8ino_a557dace973da8d44ba499ef2f7aab32d}{lap\+Point}}
+\item 
+unsigned long \mbox{\hyperlink{SSE__2023__HUD_8ino_a628c85623f767d1052f5bee5ad05b87f}{prev\+Time}}
+\item 
+unsigned long \mbox{\hyperlink{SSE__2023__HUD_8ino_ae1b55714b29c2a63dd1c62cecf0a6bac}{ECUTime}}
+\item 
+bool \mbox{\hyperlink{SSE__2023__HUD_8ino_a5a406eda379ebba0049508fe9dcfefa0}{speed\+Watch}} = false
+\item 
+bool \mbox{\hyperlink{SSE__2023__HUD_8ino_a9b20c1ac3c7ee583dabd7c5c412f2bfe}{speed\+Critical}} = false
+\item 
+bool \mbox{\hyperlink{SSE__2023__HUD_8ino_a8a15f134e676a4f3a86827f62fffd3c3}{next\+Lap}} = false
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_a2cb0fba103e2be1ca14583e73c4ef410}{MAXSECS}} = 2040
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_a0f586103ea364f45c8c7c9175358a6cb}{LAPGOAL}} = 510
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_a732fd866ec72936e2d0f3d7c847b3a3f}{TOTMIN}}
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_acee1bae6fd320d813c5e39f5ea8d9aa6}{TOTSEC}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a514998b000f33da4703544f3d2762c81}{LAPAVG}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_ac5050253b11891029300624314cbea8a}{AVGSPD}}
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_a7a07f24a399e05cd450881aa26a0758a}{LAPMIN}}
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_a1d876cf2ab6d03310d71ded965bd712c}{LAPSEC}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a4f3d677a88effb8a5d1b171734083faf}{SPDND}}
+\item 
+bool \mbox{\hyperlink{SSE__2023__HUD_8ino_aeceec268f0865b3184dfb92ece32cb2e}{first\+Coords}} = true
+\item 
+bool \mbox{\hyperlink{SSE__2023__HUD_8ino_ab00670282945fce3a34284fa98e16abf}{folder\+First}} = true
+\item 
+const int \mbox{\hyperlink{SSE__2023__HUD_8ino_aa68a30b8c0bc8f4f68c5d09cc42f62c3}{MPU\+\_\+addr}} =0x68
+\item 
+int16\+\_\+t \mbox{\hyperlink{SSE__2023__HUD_8ino_a5d936ba9f3de6b9f8e9413cb2651fcae}{AcX}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{SSE__2023__HUD_8ino_a0ebb79a2b29f9b60b067d360740f8357}{AcY}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{SSE__2023__HUD_8ino_a67e62696174a84c9a558aee6393210f8}{AcZ}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{SSE__2023__HUD_8ino_aa2890b346d14fd4b0a2333589038a885}{Tmp}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{SSE__2023__HUD_8ino_a4a788a00f01d83f611da27b7993fc307}{GyX}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{SSE__2023__HUD_8ino_ace7ec06b48f81c84b9790d910919dcf5}{GyY}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{SSE__2023__HUD_8ino_aa8a2e2d0a172356f247aa83b7fd6350d}{GyZ}}
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_a3dfb56fce4a9944b52c4e8287eebed8c}{min\+Val}} =265
+\item 
+int \mbox{\hyperlink{SSE__2023__HUD_8ino_a058fc3d0b450f32fd3a113acd5fa84b9}{max\+Val}} =402
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_af88b946fb90d5f08b5fb740c70e98c10}{x}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_ab927965981178aa1fba979a37168db2a}{y}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_ab3e6ed577a7c669c19de1f9c1b46c872}{z}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a50e4791f85d1c1b96fc2c4678778b24e}{RPM}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a41a8af4b8074e07c480709b9e96d043f}{MAP}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a29c50d32442317ebc7578332156f5cd4}{TPS}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a130b6131814ff80638a7edb5df7d2176}{ECT}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a6701769ea0c097988d17ac318d42374a}{IAT}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a0d5b2d3f7e6bb89ef284b7d2abab7e10}{O2S}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a3d9b43adebce0c0d2e3232e0b76c4b28}{SPARK}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_addda1a9f35efbb3841af6141fe3ffd4a}{FUELPW1}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a5df2bc2474ecbb13d3ff6a4b4b6abc6b}{FUELPW2}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a0706843a4c4b53c97fc11fec2b431b39}{Ub\+Adc}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a5f2928122eae4733ff6935f7ca9abb3d}{Fuel\+Lvl}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a0dc1cd602fcb6e2e5550c7b4e853776b}{BARO}}
+\item 
+double \mbox{\hyperlink{SSE__2023__HUD_8ino_a0f792756c919cc2a2da2cfb8e5b391e4}{Fuel\+Comsumption}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_aa089da1c517de68107b17fc34f25fcab}\label{SSE__2023__HUD_8ino_aa089da1c517de68107b17fc34f25fcab}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!angleLoop@{angleLoop}}
+\index{angleLoop@{angleLoop}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{angleLoop()}{angleLoop()}}
+{\footnotesize\ttfamily void angle\+Loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Updates the angle and acceleration TODO\+: where is acceleration updated? 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em x} & the x component of angular acceleration? \\
+\hline
+\mbox{\texttt{ out}}  & {\em y} & the y component of angular acceleration? \\
+\hline
+\mbox{\texttt{ out}}  & {\em z} & the z component of angular acceleration? \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_aa2aef41d8fcb263c3d1034261502d911}\label{SSE__2023__HUD_8ino_aa2aef41d8fcb263c3d1034261502d911}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!dateTime@{dateTime}}
+\index{dateTime@{dateTime}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{dateTime()}{dateTime()}}
+{\footnotesize\ttfamily String date\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns the current time as a String formatted as HH\+:\+MM\+:SS. \begin{DoxyReturn}{Returns}
+The current time as a String formatted as HH\+:\+MM\+:SS 
+\end{DoxyReturn}
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a32f7946ffc898b20669450af82f177d7}\label{SSE__2023__HUD_8ino_a32f7946ffc898b20669450af82f177d7}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!Display@{Display}}
+\index{Display@{Display}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{Display()}{Display()}}
+{\footnotesize\ttfamily Software\+Serial Display (\begin{DoxyParamCaption}\item[{12}]{,  }\item[{13}]{ }\end{DoxyParamCaption})}
+
+Defines the Software\+Serial object Display, and binds it to the digital pins 12 and 13 \mbox{\Hypertarget{SSE__2023__HUD_8ino_a2adbbdfa497c424c55b7d48622331311}\label{SSE__2023__HUD_8ino_a2adbbdfa497c424c55b7d48622331311}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!displayFormatted@{displayFormatted}}
+\index{displayFormatted@{displayFormatted}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{displayFormatted()}{displayFormatted()}}
+{\footnotesize\ttfamily String display\+Formatted (\begin{DoxyParamCaption}\item[{double}]{input }\end{DoxyParamCaption})}
+
+TODO\+: CHANGE \char`\"{}\+INTERPRETS DOUBLES WEIRD\char`\"{} TO AN ACTUAL EXPLANATION Because the display interprets doubles weird, they need to be multiplied by 10 and then sent as a string representation of an integer to be correctly rendered. 
+\begin{DoxyParams}{Parameters}
+{\em input} & the value to be formatted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a String representation of the input double that renders correctly on the Heads Up Display 
+\end{DoxyReturn}
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a593a7e912678f620f51509150870122b}\label{SSE__2023__HUD_8ino_a593a7e912678f620f51509150870122b}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!ECU@{ECU}}
+\index{ECU@{ECU}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{ECU()}{ECU()}}
+{\footnotesize\ttfamily bool ECU (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a2612ee2e01ac372b9847e46834b46800}\label{SSE__2023__HUD_8ino_a2612ee2e01ac372b9847e46834b46800}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!GPS\_loop@{GPS\_loop}}
+\index{GPS\_loop@{GPS\_loop}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{GPS\_loop()}{GPS\_loop()}}
+{\footnotesize\ttfamily void GPS\+\_\+loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Updates the Display with current information from the GPS \mbox{\Hypertarget{SSE__2023__HUD_8ino_aac086e13ab83f79870def3a2d1838fb6}\label{SSE__2023__HUD_8ino_aac086e13ab83f79870def3a2d1838fb6}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!lapEvent@{lapEvent}}
+\index{lapEvent@{lapEvent}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{lapEvent()}{lapEvent()}}
+{\footnotesize\ttfamily void lap\+Event (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Called via interrupt when the lap button is pressed. Sets the value of next\+Lap to true so that functionality can be handled on the next loop of the code. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em next\+Lap} & The boolean that is set to true when this function is called \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_afe461d27b9c48d5921c00d521181f12f}\label{SSE__2023__HUD_8ino_afe461d27b9c48d5921c00d521181f12f}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!loop@{loop}}
+\index{loop@{loop}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a15cf00a78bfe45e38b23e3120d289521}\label{SSE__2023__HUD_8ino_a15cf00a78bfe45e38b23e3120d289521}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!makeFolder@{makeFolder}}
+\index{makeFolder@{makeFolder}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{makeFolder()}{makeFolder()}}
+{\footnotesize\ttfamily void make\+Folder (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+TODO\+: is this accurate? Makes a unique folder in the SD card storage named MONTH\+\_\+\+DAY/\+HOUR. \mbox{\Hypertarget{SSE__2023__HUD_8ino_a672b86dff195b74fe73753a7dae95801}\label{SSE__2023__HUD_8ino_a672b86dff195b74fe73753a7dae95801}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!normalizeTen@{normalizeTen}}
+\index{normalizeTen@{normalizeTen}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{normalizeTen()}{normalizeTen()}}
+{\footnotesize\ttfamily String normalize\+Ten (\begin{DoxyParamCaption}\item[{int}]{time }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a7e1df6ba33b2e1b8824cb92a3ec7ae71}\label{SSE__2023__HUD_8ino_a7e1df6ba33b2e1b8824cb92a3ec7ae71}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!SD\_loop@{SD\_loop}}
+\index{SD\_loop@{SD\_loop}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{SD\_loop()}{SD\_loop()}}
+{\footnotesize\ttfamily void SD\+\_\+loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Makes a log file, and then writes data to it with each loop \mbox{\Hypertarget{SSE__2023__HUD_8ino_accb474d49cd9bf12d0570591b7f8fe2e}\label{SSE__2023__HUD_8ino_accb474d49cd9bf12d0570591b7f8fe2e}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!setDisplayVariable@{setDisplayVariable}}
+\index{setDisplayVariable@{setDisplayVariable}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{setDisplayVariable()}{setDisplayVariable()}}
+{\footnotesize\ttfamily void set\+Display\+Variable (\begin{DoxyParamCaption}\item[{String}]{variable,  }\item[{String}]{type,  }\item[{String}]{new\+Value }\end{DoxyParamCaption})}
+
+Sets a variable on the Heads Up Display to a given value. 
+\begin{DoxyParams}{Parameters}
+{\em variable} & the String name of the variable (set in the Nextion software) to set the value of \\
+\hline
+{\em type} & the data type of the variable being updated, \char`\"{}val\char`\"{} for numbers, \char`\"{}txt\char`\"{} for text, \char`\"{}pco\char`\"{} for color \\
+\hline
+{\em new\+Value} & the new value to set the variable to \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a1a79615cebc6a6756b192099ce322656}\label{SSE__2023__HUD_8ino_a1a79615cebc6a6756b192099ce322656}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!setLog@{setLog}}
+\index{setLog@{setLog}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{setLog()}{setLog()}}
+{\footnotesize\ttfamily void set\+Log (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Writes all relevant log data to the data\+String variable in CSV format. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em data\+String} & updated with a relevant log data in CSV format \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a4fc01d736fe50cf5b977f755b675f11d}\label{SSE__2023__HUD_8ino_a4fc01d736fe50cf5b977f755b675f11d}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!setup@{setup}}
+\index{setup@{setup}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default arduino function that runs once when the arduino is first powered/reset. We use this function to start serial connections to the GPS and the Display \mbox{\Hypertarget{SSE__2023__HUD_8ino_a1d0f0a78093c02310ff22c3efeeee1d2}\label{SSE__2023__HUD_8ino_a1d0f0a78093c02310ff22c3efeeee1d2}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!Timers@{Timers}}
+\index{Timers@{Timers}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{Timers()}{Timers()}}
+{\footnotesize\ttfamily void Timers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the values of the timer components on the Display. 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a5d936ba9f3de6b9f8e9413cb2651fcae}\label{SSE__2023__HUD_8ino_a5d936ba9f3de6b9f8e9413cb2651fcae}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!AcX@{AcX}}
+\index{AcX@{AcX}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{AcX}{AcX}}
+{\footnotesize\ttfamily int16\+\_\+t AcX}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a0ebb79a2b29f9b60b067d360740f8357}\label{SSE__2023__HUD_8ino_a0ebb79a2b29f9b60b067d360740f8357}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!AcY@{AcY}}
+\index{AcY@{AcY}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{AcY}{AcY}}
+{\footnotesize\ttfamily int16\+\_\+t AcY}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a67e62696174a84c9a558aee6393210f8}\label{SSE__2023__HUD_8ino_a67e62696174a84c9a558aee6393210f8}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!AcZ@{AcZ}}
+\index{AcZ@{AcZ}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{AcZ}{AcZ}}
+{\footnotesize\ttfamily int16\+\_\+t AcZ}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a2b13d276aee0d9fd646c8fa3647e869b}\label{SSE__2023__HUD_8ino_a2b13d276aee0d9fd646c8fa3647e869b}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!altitude@{altitude}}
+\index{altitude@{altitude}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{altitude}{altitude}}
+{\footnotesize\ttfamily double altitude}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ac5050253b11891029300624314cbea8a}\label{SSE__2023__HUD_8ino_ac5050253b11891029300624314cbea8a}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!AVGSPD@{AVGSPD}}
+\index{AVGSPD@{AVGSPD}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{AVGSPD}{AVGSPD}}
+{\footnotesize\ttfamily double AVGSPD}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a0dc1cd602fcb6e2e5550c7b4e853776b}\label{SSE__2023__HUD_8ino_a0dc1cd602fcb6e2e5550c7b4e853776b}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!BARO@{BARO}}
+\index{BARO@{BARO}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{BARO}{BARO}}
+{\footnotesize\ttfamily double BARO}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a266db0f4dbdfbc06ea34c96f66bebed3}\label{SSE__2023__HUD_8ino_a266db0f4dbdfbc06ea34c96f66bebed3}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!chipSelect@{chipSelect}}
+\index{chipSelect@{chipSelect}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{chipSelect}{chipSelect}}
+{\footnotesize\ttfamily const int chip\+Select = 53}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a52b0acffc0e632327281d0e59938c7b4}\label{SSE__2023__HUD_8ino_a52b0acffc0e632327281d0e59938c7b4}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!currentDistanceBetween@{currentDistanceBetween}}
+\index{currentDistanceBetween@{currentDistanceBetween}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{currentDistanceBetween}{currentDistanceBetween}}
+{\footnotesize\ttfamily double current\+Distance\+Between}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a3988632db9dced8a44ae0810eca7c8ff}\label{SSE__2023__HUD_8ino_a3988632db9dced8a44ae0810eca7c8ff}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!dataString@{dataString}}
+\index{dataString@{dataString}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{dataString}{dataString}}
+{\footnotesize\ttfamily String data\+String}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a79b8e036dca6911e3295a47d99f21f43}\label{SSE__2023__HUD_8ino_a79b8e036dca6911e3295a47d99f21f43}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!distance@{distance}}
+\index{distance@{distance}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{distance}{distance}}
+{\footnotesize\ttfamily double distance}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a130b6131814ff80638a7edb5df7d2176}\label{SSE__2023__HUD_8ino_a130b6131814ff80638a7edb5df7d2176}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!ECT@{ECT}}
+\index{ECT@{ECT}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{ECT}{ECT}}
+{\footnotesize\ttfamily double ECT}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_aa53ff32b6fdb0f89beeac05a6282768e}\label{SSE__2023__HUD_8ino_aa53ff32b6fdb0f89beeac05a6282768e}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!ECUData@{ECUData}}
+\index{ECUData@{ECUData}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{ECUData}{ECUData}}
+{\footnotesize\ttfamily int ECUData\mbox{[}32\mbox{]}}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ae1b55714b29c2a63dd1c62cecf0a6bac}\label{SSE__2023__HUD_8ino_ae1b55714b29c2a63dd1c62cecf0a6bac}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!ECUTime@{ECUTime}}
+\index{ECUTime@{ECUTime}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{ECUTime}{ECUTime}}
+{\footnotesize\ttfamily unsigned long ECUTime}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a3a5f56162810aa1e371620c4c18cc82a}\label{SSE__2023__HUD_8ino_a3a5f56162810aa1e371620c4c18cc82a}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!fileName@{fileName}}
+\index{fileName@{fileName}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{fileName}{fileName}}
+{\footnotesize\ttfamily String file\+Name = \char`\"{}\char`\"{}}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_aeceec268f0865b3184dfb92ece32cb2e}\label{SSE__2023__HUD_8ino_aeceec268f0865b3184dfb92ece32cb2e}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!firstCoords@{firstCoords}}
+\index{firstCoords@{firstCoords}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{firstCoords}{firstCoords}}
+{\footnotesize\ttfamily bool first\+Coords = true}
+
+Used to set previous\+Latitude and previous\+Longitude to the right starting values \mbox{\Hypertarget{SSE__2023__HUD_8ino_ab00670282945fce3a34284fa98e16abf}\label{SSE__2023__HUD_8ino_ab00670282945fce3a34284fa98e16abf}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!folderFirst@{folderFirst}}
+\index{folderFirst@{folderFirst}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{folderFirst}{folderFirst}}
+{\footnotesize\ttfamily bool folder\+First = true}
+
+Used for the creation of the folder \mbox{\Hypertarget{SSE__2023__HUD_8ino_a0f792756c919cc2a2da2cfb8e5b391e4}\label{SSE__2023__HUD_8ino_a0f792756c919cc2a2da2cfb8e5b391e4}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!FuelComsumption@{FuelComsumption}}
+\index{FuelComsumption@{FuelComsumption}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{FuelComsumption}{FuelComsumption}}
+{\footnotesize\ttfamily double Fuel\+Comsumption}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a5f2928122eae4733ff6935f7ca9abb3d}\label{SSE__2023__HUD_8ino_a5f2928122eae4733ff6935f7ca9abb3d}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!FuelLvl@{FuelLvl}}
+\index{FuelLvl@{FuelLvl}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{FuelLvl}{FuelLvl}}
+{\footnotesize\ttfamily double Fuel\+Lvl}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_addda1a9f35efbb3841af6141fe3ffd4a}\label{SSE__2023__HUD_8ino_addda1a9f35efbb3841af6141fe3ffd4a}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!FUELPW1@{FUELPW1}}
+\index{FUELPW1@{FUELPW1}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{FUELPW1}{FUELPW1}}
+{\footnotesize\ttfamily double FUELPW1}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a5df2bc2474ecbb13d3ff6a4b4b6abc6b}\label{SSE__2023__HUD_8ino_a5df2bc2474ecbb13d3ff6a4b4b6abc6b}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!FUELPW2@{FUELPW2}}
+\index{FUELPW2@{FUELPW2}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{FUELPW2}{FUELPW2}}
+{\footnotesize\ttfamily double FUELPW2}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ae66132fd7406f288add449f1655e3e45}\label{SSE__2023__HUD_8ino_ae66132fd7406f288add449f1655e3e45}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!GPS@{GPS}}
+\index{GPS@{GPS}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{GPS}{GPS}}
+{\footnotesize\ttfamily Tiny\+GPSPlus GPS}
+
+Creates the GPS object \mbox{\Hypertarget{SSE__2023__HUD_8ino_a4a788a00f01d83f611da27b7993fc307}\label{SSE__2023__HUD_8ino_a4a788a00f01d83f611da27b7993fc307}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!GyX@{GyX}}
+\index{GyX@{GyX}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{GyX}{GyX}}
+{\footnotesize\ttfamily int16\+\_\+t GyX}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ace7ec06b48f81c84b9790d910919dcf5}\label{SSE__2023__HUD_8ino_ace7ec06b48f81c84b9790d910919dcf5}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!GyY@{GyY}}
+\index{GyY@{GyY}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{GyY}{GyY}}
+{\footnotesize\ttfamily int16\+\_\+t GyY}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_aa8a2e2d0a172356f247aa83b7fd6350d}\label{SSE__2023__HUD_8ino_aa8a2e2d0a172356f247aa83b7fd6350d}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!GyZ@{GyZ}}
+\index{GyZ@{GyZ}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{GyZ}{GyZ}}
+{\footnotesize\ttfamily int16\+\_\+t GyZ}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ae024163074f229a06b7ea69b190e466d}\label{SSE__2023__HUD_8ino_ae024163074f229a06b7ea69b190e466d}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!heading@{heading}}
+\index{heading@{heading}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{heading}{heading}}
+{\footnotesize\ttfamily double heading}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_aa9dfa29aeb0d708ceee8ae61d649d18b}\label{SSE__2023__HUD_8ino_aa9dfa29aeb0d708ceee8ae61d649d18b}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!hourConversion@{hourConversion}}
+\index{hourConversion@{hourConversion}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{hourConversion}{hourConversion}}
+{\footnotesize\ttfamily float hour\+Conversion}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a6701769ea0c097988d17ac318d42374a}\label{SSE__2023__HUD_8ino_a6701769ea0c097988d17ac318d42374a}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!IAT@{IAT}}
+\index{IAT@{IAT}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{IAT}{IAT}}
+{\footnotesize\ttfamily double IAT}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a6c5f6b3cbd7a2b9b008eb1a9abda362c}\label{SSE__2023__HUD_8ino_a6c5f6b3cbd7a2b9b008eb1a9abda362c}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!lapAverageCount@{lapAverageCount}}
+\index{lapAverageCount@{lapAverageCount}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{lapAverageCount}{lapAverageCount}}
+{\footnotesize\ttfamily int lap\+Average\+Count = 0}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a514998b000f33da4703544f3d2762c81}\label{SSE__2023__HUD_8ino_a514998b000f33da4703544f3d2762c81}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!LAPAVG@{LAPAVG}}
+\index{LAPAVG@{LAPAVG}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{LAPAVG}{LAPAVG}}
+{\footnotesize\ttfamily double LAPAVG}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a846d1ac47c0cc2369797b454c23b335a}\label{SSE__2023__HUD_8ino_a846d1ac47c0cc2369797b454c23b335a}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!lapCount@{lapCount}}
+\index{lapCount@{lapCount}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{lapCount}{lapCount}}
+{\footnotesize\ttfamily int lap\+Count = -\/1}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a0f586103ea364f45c8c7c9175358a6cb}\label{SSE__2023__HUD_8ino_a0f586103ea364f45c8c7c9175358a6cb}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!LAPGOAL@{LAPGOAL}}
+\index{LAPGOAL@{LAPGOAL}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{LAPGOAL}{LAPGOAL}}
+{\footnotesize\ttfamily int LAPGOAL = 510}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a7a07f24a399e05cd450881aa26a0758a}\label{SSE__2023__HUD_8ino_a7a07f24a399e05cd450881aa26a0758a}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!LAPMIN@{LAPMIN}}
+\index{LAPMIN@{LAPMIN}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{LAPMIN}{LAPMIN}}
+{\footnotesize\ttfamily int LAPMIN}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a788f2a232e0556f89c8cd677963c803d}\label{SSE__2023__HUD_8ino_a788f2a232e0556f89c8cd677963c803d}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!lapPin@{lapPin}}
+\index{lapPin@{lapPin}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{lapPin}{lapPin}}
+{\footnotesize\ttfamily const int lap\+Pin = 2}
+
+The pin indicating if the lap button is being pressed \mbox{\Hypertarget{SSE__2023__HUD_8ino_a557dace973da8d44ba499ef2f7aab32d}\label{SSE__2023__HUD_8ino_a557dace973da8d44ba499ef2f7aab32d}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!lapPoint@{lapPoint}}
+\index{lapPoint@{lapPoint}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{lapPoint}{lapPoint}}
+{\footnotesize\ttfamily unsigned long lap\+Point}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a1d876cf2ab6d03310d71ded965bd712c}\label{SSE__2023__HUD_8ino_a1d876cf2ab6d03310d71ded965bd712c}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!LAPSEC@{LAPSEC}}
+\index{LAPSEC@{LAPSEC}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{LAPSEC}{LAPSEC}}
+{\footnotesize\ttfamily int LAPSEC}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a2b1012784ed532a1e3584a3b0b00cc75}\label{SSE__2023__HUD_8ino_a2b1012784ed532a1e3584a3b0b00cc75}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!lapTime@{lapTime}}
+\index{lapTime@{lapTime}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{lapTime}{lapTime}}
+{\footnotesize\ttfamily unsigned long lap\+Time}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a76714bdbc5c536fa77dfb14533ff82a9}\label{SSE__2023__HUD_8ino_a76714bdbc5c536fa77dfb14533ff82a9}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!latitude@{latitude}}
+\index{latitude@{latitude}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{latitude}{latitude}}
+{\footnotesize\ttfamily double latitude}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ac155e35fdeebafc89723a51520fb9fe6}\label{SSE__2023__HUD_8ino_ac155e35fdeebafc89723a51520fb9fe6}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!longitude@{longitude}}
+\index{longitude@{longitude}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{longitude}{longitude}}
+{\footnotesize\ttfamily double longitude}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a41a8af4b8074e07c480709b9e96d043f}\label{SSE__2023__HUD_8ino_a41a8af4b8074e07c480709b9e96d043f}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!MAP@{MAP}}
+\index{MAP@{MAP}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{MAP}{MAP}}
+{\footnotesize\ttfamily double MAP}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a2cb0fba103e2be1ca14583e73c4ef410}\label{SSE__2023__HUD_8ino_a2cb0fba103e2be1ca14583e73c4ef410}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!MAXSECS@{MAXSECS}}
+\index{MAXSECS@{MAXSECS}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{MAXSECS}{MAXSECS}}
+{\footnotesize\ttfamily int MAXSECS = 2040}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a058fc3d0b450f32fd3a113acd5fa84b9}\label{SSE__2023__HUD_8ino_a058fc3d0b450f32fd3a113acd5fa84b9}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!maxVal@{maxVal}}
+\index{maxVal@{maxVal}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{maxVal}{maxVal}}
+{\footnotesize\ttfamily int max\+Val =402}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a3dfb56fce4a9944b52c4e8287eebed8c}\label{SSE__2023__HUD_8ino_a3dfb56fce4a9944b52c4e8287eebed8c}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!minVal@{minVal}}
+\index{minVal@{minVal}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{minVal}{minVal}}
+{\footnotesize\ttfamily int min\+Val =265}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a51e3744ca22ee86001a2094dc4fdf697}\label{SSE__2023__HUD_8ino_a51e3744ca22ee86001a2094dc4fdf697}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!mpu@{mpu}}
+\index{mpu@{mpu}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{mpu}{mpu}}
+{\footnotesize\ttfamily Adafruit\+\_\+\+MPU6050 mpu}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_aa68a30b8c0bc8f4f68c5d09cc42f62c3}\label{SSE__2023__HUD_8ino_aa68a30b8c0bc8f4f68c5d09cc42f62c3}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!MPU\_addr@{MPU\_addr}}
+\index{MPU\_addr@{MPU\_addr}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{MPU\_addr}{MPU\_addr}}
+{\footnotesize\ttfamily const int MPU\+\_\+addr =0x68}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a8a15f134e676a4f3a86827f62fffd3c3}\label{SSE__2023__HUD_8ino_a8a15f134e676a4f3a86827f62fffd3c3}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!nextLap@{nextLap}}
+\index{nextLap@{nextLap}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{nextLap}{nextLap}}
+{\footnotesize\ttfamily bool next\+Lap = false}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ad42797b9aa98fc3b4f0c9379d5058a10}\label{SSE__2023__HUD_8ino_ad42797b9aa98fc3b4f0c9379d5058a10}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!numberOfSatellites@{numberOfSatellites}}
+\index{numberOfSatellites@{numberOfSatellites}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{numberOfSatellites}{numberOfSatellites}}
+{\footnotesize\ttfamily int number\+Of\+Satellites}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a0d5b2d3f7e6bb89ef284b7d2abab7e10}\label{SSE__2023__HUD_8ino_a0d5b2d3f7e6bb89ef284b7d2abab7e10}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!O2S@{O2S}}
+\index{O2S@{O2S}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{O2S}{O2S}}
+{\footnotesize\ttfamily double O2S}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_af5cbe348d725709e7d3ada96422e04d8}\label{SSE__2023__HUD_8ino_af5cbe348d725709e7d3ada96422e04d8}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!previousLatitude@{previousLatitude}}
+\index{previousLatitude@{previousLatitude}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{previousLatitude}{previousLatitude}}
+{\footnotesize\ttfamily double previous\+Latitude}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a3c87e8abead8833a75225ffefa9dbfe0}\label{SSE__2023__HUD_8ino_a3c87e8abead8833a75225ffefa9dbfe0}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!previousLongitude@{previousLongitude}}
+\index{previousLongitude@{previousLongitude}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{previousLongitude}{previousLongitude}}
+{\footnotesize\ttfamily double previous\+Longitude}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_aba6355da33350594e71dc5f4cf59e47c}\label{SSE__2023__HUD_8ino_aba6355da33350594e71dc5f4cf59e47c}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!prevThrottle@{prevThrottle}}
+\index{prevThrottle@{prevThrottle}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{prevThrottle}{prevThrottle}}
+{\footnotesize\ttfamily int prev\+Throttle = 0}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a628c85623f767d1052f5bee5ad05b87f}\label{SSE__2023__HUD_8ino_a628c85623f767d1052f5bee5ad05b87f}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!prevTime@{prevTime}}
+\index{prevTime@{prevTime}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{prevTime}{prevTime}}
+{\footnotesize\ttfamily unsigned long prev\+Time}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a50e4791f85d1c1b96fc2c4678778b24e}\label{SSE__2023__HUD_8ino_a50e4791f85d1c1b96fc2c4678778b24e}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!RPM@{RPM}}
+\index{RPM@{RPM}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{RPM}{RPM}}
+{\footnotesize\ttfamily double RPM}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_adec02fb1cd3d5a13e7cec308b70298f9}\label{SSE__2023__HUD_8ino_adec02fb1cd3d5a13e7cec308b70298f9}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!RS232@{RS232}}
+\index{RS232@{RS232}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{RS232}{RS232}}
+{\footnotesize\ttfamily byte RS232\mbox{[}64\mbox{]}}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ac9ec61e2f5be08b4bc57a83e0416ac91}\label{SSE__2023__HUD_8ino_ac9ec61e2f5be08b4bc57a83e0416ac91}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!RSchecker@{RSchecker}}
+\index{RSchecker@{RSchecker}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{RSchecker}{RSchecker}}
+{\footnotesize\ttfamily bool RSchecker = true}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a3d9b43adebce0c0d2e3232e0b76c4b28}\label{SSE__2023__HUD_8ino_a3d9b43adebce0c0d2e3232e0b76c4b28}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!SPARK@{SPARK}}
+\index{SPARK@{SPARK}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{SPARK}{SPARK}}
+{\footnotesize\ttfamily double SPARK}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a4f3d677a88effb8a5d1b171734083faf}\label{SSE__2023__HUD_8ino_a4f3d677a88effb8a5d1b171734083faf}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!SPDND@{SPDND}}
+\index{SPDND@{SPDND}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{SPDND}{SPDND}}
+{\footnotesize\ttfamily double SPDND}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a6dc6e6f3c75c509ce943163afb5dade7}\label{SSE__2023__HUD_8ino_a6dc6e6f3c75c509ce943163afb5dade7}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!speed@{speed}}
+\index{speed@{speed}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{speed}{speed}}
+{\footnotesize\ttfamily double speed}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a9b20c1ac3c7ee583dabd7c5c412f2bfe}\label{SSE__2023__HUD_8ino_a9b20c1ac3c7ee583dabd7c5c412f2bfe}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!speedCritical@{speedCritical}}
+\index{speedCritical@{speedCritical}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{speedCritical}{speedCritical}}
+{\footnotesize\ttfamily bool speed\+Critical = false}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a5a406eda379ebba0049508fe9dcfefa0}\label{SSE__2023__HUD_8ino_a5a406eda379ebba0049508fe9dcfefa0}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!speedWatch@{speedWatch}}
+\index{speedWatch@{speedWatch}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{speedWatch}{speedWatch}}
+{\footnotesize\ttfamily bool speed\+Watch = false}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a6e5adc980324a6e0b9350c96e3da48c2}\label{SSE__2023__HUD_8ino_a6e5adc980324a6e0b9350c96e3da48c2}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!startHour@{startHour}}
+\index{startHour@{startHour}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{startHour}{startHour}}
+{\footnotesize\ttfamily String start\+Hour}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ae57849e7469c084b2cfa7bf5e32da392}\label{SSE__2023__HUD_8ino_ae57849e7469c084b2cfa7bf5e32da392}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!StartIndex@{StartIndex}}
+\index{StartIndex@{StartIndex}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{StartIndex}{StartIndex}}
+{\footnotesize\ttfamily int Start\+Index}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a0e06ecdad9f318fafbb0b28370c3cfef}\label{SSE__2023__HUD_8ino_a0e06ecdad9f318fafbb0b28370c3cfef}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!startTime@{startTime}}
+\index{startTime@{startTime}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{startTime}{startTime}}
+{\footnotesize\ttfamily unsigned long start\+Time}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a0c8193333055a6fe4b6cf1fba0fe95ca}\label{SSE__2023__HUD_8ino_a0c8193333055a6fe4b6cf1fba0fe95ca}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!throttle@{throttle}}
+\index{throttle@{throttle}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{throttle}{throttle}}
+{\footnotesize\ttfamily Servo throttle}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_aa39247ea611c791f220ffcf1240a8405}\label{SSE__2023__HUD_8ino_aa39247ea611c791f220ffcf1240a8405}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!throttleValue@{throttleValue}}
+\index{throttleValue@{throttleValue}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{throttleValue}{throttleValue}}
+{\footnotesize\ttfamily int throttle\+Value}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_aa2890b346d14fd4b0a2333589038a885}\label{SSE__2023__HUD_8ino_aa2890b346d14fd4b0a2333589038a885}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!Tmp@{Tmp}}
+\index{Tmp@{Tmp}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{Tmp}{Tmp}}
+{\footnotesize\ttfamily int16\+\_\+t Tmp}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ab277f1f4185ca81240006acc8a800571}\label{SSE__2023__HUD_8ino_ab277f1f4185ca81240006acc8a800571}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!totalAverageCount@{totalAverageCount}}
+\index{totalAverageCount@{totalAverageCount}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{totalAverageCount}{totalAverageCount}}
+{\footnotesize\ttfamily int total\+Average\+Count =0}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_aa9bee177659c837ed71df703dd1624f9}\label{SSE__2023__HUD_8ino_aa9bee177659c837ed71df703dd1624f9}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!totalTime@{totalTime}}
+\index{totalTime@{totalTime}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{totalTime}{totalTime}}
+{\footnotesize\ttfamily unsigned long total\+Time}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a732fd866ec72936e2d0f3d7c847b3a3f}\label{SSE__2023__HUD_8ino_a732fd866ec72936e2d0f3d7c847b3a3f}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!TOTMIN@{TOTMIN}}
+\index{TOTMIN@{TOTMIN}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{TOTMIN}{TOTMIN}}
+{\footnotesize\ttfamily int TOTMIN}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_acee1bae6fd320d813c5e39f5ea8d9aa6}\label{SSE__2023__HUD_8ino_acee1bae6fd320d813c5e39f5ea8d9aa6}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!TOTSEC@{TOTSEC}}
+\index{TOTSEC@{TOTSEC}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{TOTSEC}{TOTSEC}}
+{\footnotesize\ttfamily int TOTSEC}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a29c50d32442317ebc7578332156f5cd4}\label{SSE__2023__HUD_8ino_a29c50d32442317ebc7578332156f5cd4}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!TPS@{TPS}}
+\index{TPS@{TPS}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{TPS}{TPS}}
+{\footnotesize\ttfamily double TPS}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a5d749c756efaaca7675b43a418c6d100}\label{SSE__2023__HUD_8ino_a5d749c756efaaca7675b43a418c6d100}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!trigger@{trigger}}
+\index{trigger@{trigger}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{trigger}{trigger}}
+{\footnotesize\ttfamily int trigger = A0}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_a0706843a4c4b53c97fc11fec2b431b39}\label{SSE__2023__HUD_8ino_a0706843a4c4b53c97fc11fec2b431b39}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!UbAdc@{UbAdc}}
+\index{UbAdc@{UbAdc}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{UbAdc}{UbAdc}}
+{\footnotesize\ttfamily double Ub\+Adc}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_af88b946fb90d5f08b5fb740c70e98c10}\label{SSE__2023__HUD_8ino_af88b946fb90d5f08b5fb740c70e98c10}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!x@{x}}
+\index{x@{x}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily double x}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ab927965981178aa1fba979a37168db2a}\label{SSE__2023__HUD_8ino_ab927965981178aa1fba979a37168db2a}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!y@{y}}
+\index{y@{y}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily double y}
+
+\mbox{\Hypertarget{SSE__2023__HUD_8ino_ab3e6ed577a7c669c19de1f9c1b46c872}\label{SSE__2023__HUD_8ino_ab3e6ed577a7c669c19de1f9c1b46c872}} 
+\index{SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}!z@{z}}
+\index{z@{z}!SSE\_2023\_HUD.ino@{SSE\_2023\_HUD.ino}}
+\doxysubsubsection{\texorpdfstring{z}{z}}
+{\footnotesize\ttfamily double z}
+

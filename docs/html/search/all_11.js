@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['y_0',['y',['../GPS__ACC__SD_8ino.html#ab927965981178aa1fba979a37168db2a',1,'y():&#160;GPS_ACC_SD.ino'],['../GPS__With__Logging__V2_8ino.html#ab927965981178aa1fba979a37168db2a',1,'y():&#160;GPS_With_Logging_V2.ino']]]
+  ['ubadc_0',['UbAdc',['../SSE__2023__HUD_8ino.html#a0706843a4c4b53c97fc11fec2b431b39',1,'SSE_2023_HUD.ino']]]
 ];

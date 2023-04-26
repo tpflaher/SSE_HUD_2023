@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['satellites_0',['satellites',['../GPS__With__Logging__V2_07backup_08_8ino.html#a691915f3fb4792e167a2351c6e932483',1,'satellites():&#160;GPS_With_Logging_V2(backup).ino'],['../GPS__With__Logging__V2_8ino.html#a691915f3fb4792e167a2351c6e932483',1,'satellites():&#160;GPS_With_Logging_V2.ino']]],
-  ['speed_1',['speed',['../GPS__ACC__SD_8ino.html#a6dc6e6f3c75c509ce943163afb5dade7',1,'speed():&#160;GPS_ACC_SD.ino'],['../GPS__Code__SSE_8ino.html#a6dc6e6f3c75c509ce943163afb5dade7',1,'speed():&#160;GPS_Code_SSE.ino'],['../GPS__With__Logging__V2_07backup_08_8ino.html#a6dc6e6f3c75c509ce943163afb5dade7',1,'speed():&#160;GPS_With_Logging_V2(backup).ino'],['../GPS__With__Logging__V2_8ino.html#a6dc6e6f3c75c509ce943163afb5dade7',1,'speed():&#160;GPS_With_Logging_V2.ino']]],
-  ['starthour_2',['startHour',['../GPS__ACC__SD_8ino.html#a6e5adc980324a6e0b9350c96e3da48c2',1,'startHour():&#160;GPS_ACC_SD.ino'],['../GPS__With__Logging__V2_07backup_08_8ino.html#a6e5adc980324a6e0b9350c96e3da48c2',1,'startHour():&#160;GPS_With_Logging_V2(backup).ino'],['../GPS__With__Logging__V2_8ino.html#a6e5adc980324a6e0b9350c96e3da48c2',1,'startHour():&#160;GPS_With_Logging_V2.ino']]],
-  ['starttime_3',['startTime',['../GPS__ACC__SD_8ino.html#a0e06ecdad9f318fafbb0b28370c3cfef',1,'startTime():&#160;GPS_ACC_SD.ino'],['../GPS__With__Logging__V2_07backup_08_8ino.html#a0e06ecdad9f318fafbb0b28370c3cfef',1,'startTime():&#160;GPS_With_Logging_V2(backup).ino'],['../GPS__With__Logging__V2_8ino.html#a0e06ecdad9f318fafbb0b28370c3cfef',1,'startTime():&#160;GPS_With_Logging_V2.ino']]]
+  ['o2s_0',['O2S',['../SSE__2023__HUD_8ino.html#a0d5b2d3f7e6bb89ef284b7d2abab7e10',1,'SSE_2023_HUD.ino']]]
 ];
